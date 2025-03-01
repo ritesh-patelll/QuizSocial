@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quiz Social</title>
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link href="{% static "css/loadpage.css" %}" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+</head>
+<body>
+  <div class='load_text' id='load_text'>
+    <div class="load"></div>
+    <h4 id="messages" style="font-size: 18px;color: #9f8e8e;text-align: center;font-weight: lighter;">
+    </h4>
+  </div>
+  <div class="bg-modal1" style="display: none;">
+    <div class="modal-contents1">
+      <div style="position: relative;"><h4>You are in a waiting area</h4><br>
+        <h6>Share this link with your friend</h6>
+        <br>
+        <div style="display: flex;align-items: center;border-width: 2px 2px 4px;border-style: solid;border-color: rgb(229, 229, 229);border-radius: 10px;">
+          <div class="displaylink" id="displaylink" style="display: block;overflow: scroll;width: 90%;padding: 5px;border-right: 2px solid #e5e5e5;"></div>
+          <div id='in-chara1' class='in-chara1'>
+            <h6>Copied!</h6>
+          </div>
+          <a onClick=copylink()>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2" viewBox="0 0 16 16" style="cursor: pointer;padding: 7px 5px;">
+              <path d="M3.5 2a.5.5 0 0 0-.5.5v12a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-12a.5.5 0 0 0-.5-.5H12a.5.5 0 0 1 0-1h.5A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1H4a.5.5 0 0 1 0 1h-.5Z"></path>
+              <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>
+            </svg>
+          </a>
+        </div>
+        <br>
+        <h6>To start the game</h6>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var type = "{{ type|safe }}";
+    var id = "{{ id|safe }}";
+    var room_info = "{{ room_info|safe }}";
+    var link_type = "{{ link_type|safe }}";
+    var redirect_to_p = false;
+
+    document.getElementById("messages").innerHTML = 'Checking camera status...';
+
+    let waiting = async () => {
+      var now = new Date();
+      var response = await fetch('/checkroomfull/', {
+          method:'POST',
+          headers: {
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({'type': type, 'id': id.toString(), 'room_no': sessionStorage.getItem('room_no')})
+      })
+      var checkroom = await response.json()
+      if (checkroom.start) {
+        clearInterval(stopwatch)
+        redirect_to_p = true
+        window.open(`/room/${type[0]}${id}${sessionStorage.getItem('room_no')}?type=${type}&id=${id}&room_info=${sessionStorage.getItem('room_no')}`, '_self')
+      }
+    }
+
+    function copylink() {
+      navigator.clipboard.writeText(document.getElementById("displaylink").innerHTML);
+      document.getElementById('in-chara1').style.display = "block";
+        setTimeout(() => {  document.getElementById('in-chara1').style.display = "none"; }, 1000);
+    }
+
+    let handleSubmit = async () => {
+        let room = id.toString() + ' ' + 'Room'
+
+        let response = await fetch(`/get_token/?channel=${room}&type=${type}&room_info=${room_info}&link_type=${link_type}`)
+        let data = await response.json()
+
+        let UID = data.uid
+        let token = data.token
+        room = id.toString() + ' ' + 'Room' + ' ' + data.room_no
+
+        sessionStorage.setItem('UID', UID)
+        sessionStorage.setItem('token', token)
+        sessionStorage.setItem('room', room)
+        sessionStorage.setItem('room_no', data.room_no)
+        document.getElementById("displaylink").innerHTML = "https://dumdumsocial.com/joinlink/" + type + "/" + id + "/" + sessionStorage.getItem('room_no');
+        document.getElementById("displaylink").style.display = 'block';
+
+        return 'created'
+    }
+
+    function hasCamera() {
+        return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+    }
+
+    async function checkCamera() {
+        if (!hasCamera()) {
+            document.getElementById("messages").innerHTML = 'No camera found.';
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+            document.querySelector('.bg-modal1').style.display = 'block';
+
+            document.getElementById("messages").innerHTML = 'Creating Room...';
+
+            stream.getTracks().forEach(track => track.stop());
+
+            await handleSubmit()
+
+            document.getElementById("messages").innerHTML = 'Waiting For Other Player To Join...';
+            
+            stopwatch = setInterval(waiting, 5000);
+    
+            
+        } catch (error) {
+            document.getElementById("messages").innerHTML = 'Camera is not working: ' + error.message;
+        }
+    }
+
+    checkCamera();
+
+
+    let deleteMember = async () => {
+      let response = await fetch('/delete_member_from_mr/', {
+          method:'POST',
+          headers: {
+              'Content-Type':'application/json'
+          },
+          body:JSON.stringify({'type': type, 'id': id, 'room_no': sessionStorage.getItem('room_no'), 'redirect_to_p': redirect_to_p})
+      })
+      let member = await response.json()
+    }
+
+    addEventListener("beforeunload",deleteMember);
+  </script>
+</body>
+</html>

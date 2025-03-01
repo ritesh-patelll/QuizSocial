@@ -1,0 +1,570 @@
+{% load static %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    {% load static %}
+    <meta charset='utf-8'>
+    <title>Dum Dum Social: Character Dum Charades Game | {{ id }}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="{% static "css/main.css" %}" rel="stylesheet">
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+    <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+    <style type="text/css">
+        @font-face{
+          font-family: NeueMachina;
+          src: url("{% static "font/NeueMachina-Light.otf" %}");
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.9.6/lottie.min.js"></script>
+</head>
+<body>
+<main>
+    <audio id="corrAudio">
+        <source src="{% static "sound_effects/correct_answer.mp3" %}" type="audio/mpeg">
+    </audio>
+    <audio id="wronAudio">
+        <source src="{% static "sound_effects/wrong_answer.mp3" %}" type="audio/mpeg">
+    </audio>
+
+    <section id="room-name-wrapper">
+        <span id='role-message'></span>
+        <p id='message'></p>
+    </section>
+
+    <div id="event">
+        <section id="video-streams">
+            <div id="upperbarWLT">
+                <div id="upperbarWL">
+                    <div style="z-index: 9999;position: relative;">
+                        <div class="protim-tim">
+                            <div class="timer">
+                                <div class="score_totalscore">W: 0</div>
+                            </div>
+                            <div id="divider">&nbsp;</div>
+                            <div class="timer">
+                                <div class="score_losescore">L: 0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="onewordmessage"></div>
+                </div>
+                <div style="z-index: 9999;position: relative;margin: 10px;">
+                    <div class="protim-tim">
+                        <div class="timer">
+                            <div class="timer_min">5</div>&nbsp;min&nbsp;
+                            <div class="timer_sec">0</div>&nbsp;sec
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% comment %} <div id="slideupdown" class="slideupdown styles__menuOpened_cnW7e">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" id="arrorupchara" class="bi bi-chevron-up transformingx" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+            </svg>
+            <div id="all_character_img" class="all_character_img"></div>
+        </div> {% endcomment %}
+        <div id="all_character_img" class="all_character_img"></div>
+    </div>
+
+    <section id="controls-wrapper">
+        <div class="svg hide" id="svg"></div>
+        <div class="report" id="report">
+            <button onclick="report()" class="rep" type="button" id="ReportBtn">Report</button>
+        </div>
+        <div class="explain" id="explain">
+            <button onclick="explainfun()" class="exp" type="button" id="ExplainBtn">Explain</button>
+        </div>
+        <div class="next" id="next">
+            <button onclick="nextfun()" class="nex" type="button" id="NextBtn">Guess</button>
+        </div>
+        <div class="submit" id="submit" style="display: none;">
+            <form class="report_result" id="report_result" method="POST" action="{{ link }}">
+                {% csrf_token %}
+                <input type="hidden" id="score" name="score" value="">
+                <input type="hidden" id="reportedimg" name="reportedimg" value="">
+                <input type="hidden" id="reportedtext" name="reportedtext" value="">
+                <input type="hidden" id="playingwith" name="playingwith" value="">
+                <input type="submit" value="create form" style="visibility:hidden" />
+            </form>
+        </div>
+    </section>
+</main>
+<div class="bg-modal">
+    <div class="modal-contents">
+        <button onclick="showss()" style="align-content: center;display: flex;align-items: center;text-decoration: underline;border: none;background: white;color: blue;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+                <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"/>
+            </svg>
+            ScreenShot
+        </button>
+        <div id="ss"></div>
+
+        <div class='questionwronoption'>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="It's spam" id="flexCheckDefault1">
+                <label class="form-check-label" for="flexCheckDefault1">
+                    It's spam
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Nudity or sexual activity" id="flexCheckDefault2">
+                <label class="form-check-label" for="flexCheckDefault2">
+                    Nudity or sexual activity
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Hate speech or symbols" id="flexCheckDefault3">
+                <label class="form-check-label" for="flexCheckDefault3">
+                    Hate speech or symbols
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Sale of illegal or regulated goods" id="flexCheckDefault4">
+                <label class="form-check-label" for="flexCheckDefault4">
+                    Sale of illegal or regulated goods
+                </label>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Harassment" id="flexCheckDefault5">
+                <label class="form-check-label" for="flexCheckDefault5">
+                    Harassment
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Suicide or self-injury" id="flexCheckDefault6">
+                <label class="form-check-label" for="flexCheckDefault6">
+                    Suicide or self-injury
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="Scam or fraud" id="flexCheckDefault7">
+                <label class="form-check-label" for="flexCheckDefault7">
+                    Scam or fraud
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="The player is cheating" id="flexCheckDefault8">
+                <label class="form-check-label" for="flexCheckDefault8">
+                    The player is cheating
+                </label>
+            </div>
+        </div>
+
+        <br>
+        <div class="coldiv">
+            <div class="undo">
+            <a class="und" type="button" id="undoBtn">Cancel</a>
+            </div>
+            <div class="confirm">
+            <a class="conf" type="button" id="confirmBtn">Confirm</a>
+            </div>
+        </div>
+      
+    </div>
+</div>
+
+<div class="bg-modal1" id="bg-modal1">
+    <div class="modal-contents1" id="modal-contents1">
+        <a class="exit1" type="button">✖</a>
+        <div id="sss"></div>
+    </div>
+</div>
+<script src="{% static "js/AgoraRTC_N-4.13.0.js" %}"></script>
+<script src="{% static "js/streams.js" %}"></script>
+
+<script type="text/javascript">
+    const svgContainer = document.getElementById('svg');
+    const animItem = bodymovin.loadAnimation({
+        wrapper: svgContainer,
+        animType: 'svg',
+        loop: false,
+        autoplay: false,
+        path: 'https://assets2.lottiefiles.com/packages/lf20_u4yrau.json'
+    });
+    const timeCountmin = document.querySelector(".timer .timer_min");
+    const timeCountsec = document.querySelector(".timer .timer_sec");
+    var room_code = "{{ room_code|safe }}";
+    var username = "{{ username|safe }}";
+    var type = "{{ type|safe }}";
+    var id = "{{ id|safe }}";
+    var room_no = parseInt(sessionStorage.getItem('room_no'));
+    var selected_img_id = '';
+    var explaining_character = '';
+    var role = '';
+    var match_round = 0;
+    var match_win_points = 0;
+    var match_lose_points = 0;
+    var correct_sound = document.getElementById("corrAudio");
+    var wrong_sound = document.getElementById("wronAudio");
+    const list_selected_characters = [];
+    var all_chara_img = []
+    let url = `wss://${window.location.host}/ws/socket-server/${room_code}/`
+    const socket = new WebSocket(url)
+
+    function showingbuttons(){
+        if (role == 'guesser') {
+            document.getElementById('explain').style.display = 'none';
+            document.getElementById('next').style.display = 'none';
+            document.getElementById('role-message').innerHTML = 'Your match is picking a character...';
+            document.getElementById('onewordmessage').innerHTML = 'WAIT';
+        }
+        else if (role == 'explainer') {
+            document.getElementById('explain').style.display = 'block';
+            document.getElementById('next').style.display = 'none';
+            document.getElementById('role-message').innerHTML = 'Pick A Character';
+            document.getElementById('onewordmessage').innerHTML = 'PICK';
+        }
+    }
+
+    function report() {
+        html2canvas(document.querySelector("#video-streams")).then(canvas => {
+            document.querySelector("#ss").appendChild(canvas)
+            document.getElementById("ss").firstChild.id = "repo_pic";
+            document.getElementById("ss").firstChild.className = "reported_pic";
+            document.getElementById('repo_pic').removeAttribute("style");
+            
+            var dataURL = document.getElementById('repo_pic').toDataURL("image/png");
+            let one_character = `<img class="show_reported_pic" id="sh_repo_pic" src="${dataURL}" />`
+            document.querySelector("#sss").insertAdjacentHTML('beforeend', one_character)
+        });
+    }
+
+    document.querySelector('.exit1').addEventListener("click", function() {
+        document.querySelector('.bg-modal1').style.display = "none";
+    });
+
+    function join() {
+        var data = {
+            'player' : username,
+            'type' : 'join',
+            'type_' : type,
+            'id' : id,
+            'room_no' : room_no,
+        }
+        socket.send(JSON.stringify({
+            data
+        }));
+        clearInterval(stopwatch)
+    }
+
+    function startTimer(min, sec){
+        counter = setInterval(timer, 1000);
+        function timer(){
+          timeCountsec.textContent = sec;
+          sec--;
+          if(sec < 9){
+            let addZero = timeCountsec.textContent;
+            timeCountsec.textContent = "0" + addZero;
+          }
+          if (sec < 0 && min == 0){
+            clearInterval(counter);
+            document.getElementById("report_result").submit();
+          }
+          else if(sec < 0){ 
+            min--;
+            sec = 59
+            timeCountmin.textContent = min;
+            timeCountsec.textContent = sec;
+          }
+        }
+    }
+
+    document.getElementById('explain').style.display = 'none';
+    document.getElementById('next').style.display = 'none';
+    document.getElementById('role-message').innerHTML = 'Waiting For other player';
+    document.getElementById('onewordmessage').innerHTML = 'WAITING...';
+    document.getElementById("score").value = match_win_points;
+
+    stopwatch = setInterval(join, 2000);
+
+    function message_ani() {
+        document.getElementById('message').style.display = 'none';
+        document.getElementById('role-message').style.display = 'flex';
+        clearInterval(message_vari)
+    }
+
+    function playcorrAudio() {
+        correct_sound.play();
+    }
+  
+    function playwronAudio() {
+        wrong_sound.play();
+    }
+
+    function showss() {
+        document.querySelector('.bg-modal1').style.display = "flex";
+    }
+
+    $(document).mouseup(function(e){
+        var container = $(".modal-contents");
+        if (!container.is(e.target) && container.has(e.target).length === 0 && document.querySelector('.bg-modal1').style.display == "none"){
+            var r = document.getElementsByTagName("input");
+  
+            for (var i = 0; i < r.length; i++) {
+                if (r[i].type == "checkbox" && r[i].checked) {
+                    r[i].checked = false;
+                }
+            }
+            while (document.querySelector("#ss").hasChildNodes()) {
+                document.querySelector("#ss").removeChild(document.querySelector("#ss").firstChild);
+            }
+            while (document.querySelector("#sss").hasChildNodes()) {
+                document.querySelector("#sss").removeChild(document.querySelector("#sss").firstChild);
+            }
+            document.querySelector('.bg-modal').style.display = "none";
+        }
+    });
+
+    $(document).mouseup(function(e){
+        var container = $(".modal-contents1");
+        if (!container.is(e.target) && container.has(e.target).length === 0){
+            
+            document.querySelector('.bg-modal1').style.display = "none";
+        }
+    });
+
+    {% comment %} $(document).mouseup(function(e){
+        var container = $("#slideupdown");
+        if (!container.is(e.target) && container.has(e.target).length === 0 && document.querySelector('.bg-modal').style.display == "none" && document.querySelector('.bg-modal1').style.display == "none"){
+            if (document.getElementById("slideupdown").classList.value.split(" ").includes("styles__menuOpened_cnW7e")){
+                document.getElementById("slideupdown").classList.remove("styles__menuOpened_cnW7e");
+                document.getElementById("arrorupchara").classList.remove("transformingx");
+            } else {
+                document.getElementById("slideupdown").classList.add("styles__menuOpened_cnW7e");
+                document.getElementById("arrorupchara").classList.add("transformingx");
+            }
+        }
+    }); {% endcomment %}
+
+    document.getElementById('ReportBtn').addEventListener("click", function() {
+        document.querySelector('.bg-modal').style.display = "flex";
+    });
+
+    {% comment %} document.getElementById('arrorupchara').addEventListener("click", function() {
+        if (document.getElementById("slideupdown").classList.value.split(" ").includes("styles__menuOpened_cnW7e")){
+            document.getElementById("slideupdown").classList.remove("styles__menuOpened_cnW7e");
+            document.getElementById("arrorupchara").classList.remove("transformingx");
+        } else {
+            document.getElementById("slideupdown").classList.add("styles__menuOpened_cnW7e");
+            document.getElementById("arrorupchara").classList.add("transformingx");
+        }
+    }); {% endcomment %}
+
+    document.querySelector('.und').addEventListener("click", function() {
+        var r = document.getElementsByTagName("input");
+  
+        for (var i = 0; i < r.length; i++) {
+          if (r[i].type == "checkbox" && r[i].checked) {
+            r[i].checked = false;
+          }
+        }
+        while (document.querySelector("#ss").hasChildNodes()) {
+            document.querySelector("#ss").removeChild(document.querySelector("#ss").firstChild);
+        }
+        while (document.querySelector("#sss").hasChildNodes()) {
+            document.querySelector("#sss").removeChild(document.querySelector("#sss").firstChild);
+        }
+        document.querySelector('.bg-modal').style.display = "none";
+    });
+
+    document.querySelector('.conf').addEventListener("click", function() {
+        var r = document.getElementsByTagName("input");
+        var optsel2 = [];
+
+        for (var i = 0; i < r.length; i++) {
+          if (r[i].type == "checkbox" && r[i].checked) {
+            optsel2.push(r[i].value);
+            r[i].checked = false;
+          }
+        }
+        
+        document.getElementById("reportedtext").value = optsel2;
+        var dataURL = document.getElementById('repo_pic').toDataURL("image/png");
+        document.getElementById('reportedimg').value = dataURL;
+        setTimeout(function() {
+            document.getElementById("report_result").submit();
+        }, 300);
+    });
+
+    animItem.addEventListener('complete', () => {
+        svgContainer.classList.add('hide');
+    })
+
+    function explainfun(){
+        if (selected_img_id != ''){
+
+            var data = {
+                'player' : username,
+                'character' : selected_img_id,
+                'type' : 'explaining',
+                'match_round' : match_round,
+            }
+            explaining_character = selected_img_id;
+            selected_img_id = ''
+    
+            socket.send(JSON.stringify({
+                data
+            }));
+        }else{
+            document.getElementById('role-message').style.display = 'none';
+            document.getElementById('message').innerHTML = 'Please selete a character first!';
+            document.getElementById('message').style.display = 'block';
+            message_vari = setInterval(message_ani, 5000);
+        }
+    }
+
+    function nextfun(){
+        if (explaining_character != '') {
+            if (selected_img_id != ''){
+                var data = {
+                    'player' : username,
+                    'character' : selected_img_id,
+                    'type' : 'guesser',
+                    'match_round' : match_round,
+                    'all_chara_img' : all_chara_img,
+                    'list_selected_characters' : list_selected_characters,
+                }
+                socket.send(JSON.stringify({
+                    data
+                }));
+            }else{
+                document.getElementById('role-message').style.display = 'none';
+                document.getElementById('message').innerHTML = 'Please selete a character first!';
+                document.getElementById('message').style.display = 'flex';
+                message_vari = setInterval(message_ani(document.getElementById('message')), 5000);
+            }
+        }
+    }
+    
+    function feeding_charater_image(list_of_all_the_charaters){
+        let parent_list = document.getElementById("all_character_img");
+        while (parent_list.hasChildNodes()) {
+            parent_list.removeChild(parent_list.firstChild);
+        }
+        let one_character = `<div id="extraboxforp2" style=" width: calc((100vh / 5.1)*(86/127)); border-radius: 5px; max-width: calc((100vw / 4.1)); margin: 0px 1px; position: relative; height: calc(100vh - 4.1*(((100vh / 5.1)*(86/127))*(127/86))); min-height: calc(100vh - 4*((100vw / 4)*(127/86))); "></div>`
+        parent_list.insertAdjacentHTML('beforeend', one_character)
+        len_of_chara = list_of_all_the_charaters.length
+        for (let i = 0; i < len_of_chara; i++) {
+            let id = Math.floor(Math.random() * list_of_all_the_charaters.length);
+            let p = list_of_all_the_charaters[id];
+            list_of_all_the_charaters.splice(id, 1);
+            let one_character = `<img class="img_style" id="${p}" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/all_casts/${p}.jpg" />`
+
+            parent_list.insertAdjacentHTML('beforeend', one_character)
+        }
+
+        for (var img_len = 0; img_len < document.getElementsByTagName("img").length; img_len++) {
+            document.getElementsByTagName("img")[img_len].addEventListener("click", function(e) {
+                try{
+                    document.getElementById(selected_img_id).style.opacity = "50%";
+                    document.getElementById(selected_img_id).style.filter = "grayscale(100%)";
+                }
+                catch(err) {
+                }
+                selected_img_id = e.srcElement.id.toString();
+                document.getElementById(selected_img_id).style.opacity = "100%";
+                document.getElementById(selected_img_id).style.filter = "drop-shadow(2px 4px 6px black)";
+            });
+        }
+    }
+
+    socket.onmessage = function (e){
+        var data = JSON.parse(e.data)
+        if (data['payload']['type'] == 'explaining') {
+            if (data['payload']['player'] != username) {
+                document.getElementById('next').style.display = 'block';
+                document.getElementById('role-message').innerHTML = 'Guess The Character';
+                document.getElementById('onewordmessage').innerHTML = 'GUESS';
+            }else{
+                document.getElementById('explain').style.display = 'none';
+                document.getElementById('role-message').innerHTML = 'Act The Character';
+                document.getElementById('onewordmessage').innerHTML = 'ACT';
+            }
+            explaining_character = data['payload']['character']
+            list_selected_characters.push(data['payload']['character'])
+        }
+        else if (data['payload']['type'] == 'guesser') {
+            if (data['payload']['character'] == explaining_character) {
+                svgContainer.classList.remove('hide');
+                document.querySelector('body').style.backgroundColor = "#54e103";
+                animItem.goToAndPlay(0,true);
+                playcorrAudio();
+                match_win_points += 1;
+                document.getElementById("score").value = match_win_points;
+                document.querySelector('.score_totalscore').textContent = "W: " + match_win_points.toString();
+                setTimeout(function() {
+                    document.querySelector('body').style.backgroundColor = "#fff";
+                }, 500);
+            }else{
+                document.querySelector('body').style.backgroundColor = "#ec2626";
+                playwronAudio();
+                match_lose_points += 1;
+                document.querySelector('.score_losescore').textContent = "L: " + match_lose_points.toString();
+                setTimeout(function() {
+                    document.querySelector('body').style.backgroundColor = "#fff";
+                }, 500);
+            }
+            
+            selected_img_id = ''
+            explaining_character = ''
+
+            if (match_round == 10) {
+                document.getElementById("report_result").submit();
+            }
+            
+            match_round += 1;
+            if (role == 'guesser') {
+                role = 'explainer'
+            }
+            else if (role == 'explainer') {
+                role = 'guesser'
+            }
+            showingbuttons();
+
+            if (data['payload']['character_img'].length != 0) {
+                feeding_charater_image(data['payload']['character_img'])
+            }else{
+                document.getElementById("report_result").submit();
+            }
+        }
+        else if (data['payload']['type'] == 'start') {
+            role = data['payload'][username];
+            const keys = Object.keys(data['payload']);
+            for (var i = 0; i < keys.length; i++) {
+                if ( keys[i] != username) {
+                    if ( keys[i] != 'start') {
+                        if ( keys[i] != 'character_img') {
+                            if ( keys[i] != 'all_chara_img') {
+                                document.getElementById("playingwith").value = keys[i];
+                            }
+                        }
+                    }
+                }
+            }
+            all_chara_img = data['payload']['all_chara_img']
+            feeding_charater_image(data['payload']['character_img']);
+            match_round += 1;
+            startTimer(document.querySelector('.timer_min').textContent, document.querySelector('.timer_sec').textContent);
+            showingbuttons();
+        }
+
+        else if (data['payload']['type'] == 'end') {
+            document.getElementById("report_result").submit();
+        }
+    }
+
+
+</script>
+</body>
+</html>

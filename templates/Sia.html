@@ -1,0 +1,84 @@
+<!-- Extend base.html -->
+{% extends "base.html" %}
+
+
+{% block body %}
+
+<!-- Load static files -->
+{% load static %}
+
+<div class="chat-container" id="chat-container">
+    {% comment %} <div class="chat-messages" id="chat-messages">
+        <!-- Chat messages will be displayed here -->
+    </div> {% endcomment %}
+
+    <div class="chat-messages" id="chat-messages">
+        {% comment %} <div class="previous-chat-messages" id="previous-chat-messages"> {% endcomment %}
+        {% for snippet in conversations|slice:":-1" %}
+            <div class="chat-message {{ snippet.role }}">
+                <div class="chat-message-header">
+                    {% if snippet.role == "user" %}
+                        {{ request.user.first_name }}
+                    {% else %}
+                        Sia
+                    {% endif %}
+                </div>
+                {% comment %} <div class="chat-message-body">{{ snippet.content }}</div> {% endcomment %}
+                <div class="chat-message-body">{{ snippet.content.text|safe }}</div>
+                {% if snippet.content.buttons %}
+                    <div class="chat-message-options">{{ snippet.content.buttons|safe }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% comment %} </div> {% endcomment %}
+        {% comment %} <div class="current-chat-messages" id="current-chat-messages"> {% endcomment %}
+        {% for snippet in conversations|slice:"-1:" %}
+            <div class="chat-message {{ snippet.role }}">
+                <div class="chat-message-header">
+                    {% if snippet.role == "user" %}
+                        {{ request.user.first_name }}
+                    {% else %}
+                        Sia
+                    {% endif %}
+                </div>
+                {% comment %} <div class="chat-message-body">{{ snippet.content }}</div> {% endcomment %}
+                <div class="chat-message-body">{{ snippet.content.text|safe }}</div>
+                {% if snippet.content.buttons %}
+                    <div class="chat-message-options">{{ snippet.content.buttons|safe }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        {% comment %} </div> {% endcomment %}
+    </div>
+
+    <div class="chat-input-container">
+        {% csrf_token %}
+        <input type="text" id="chat-input" placeholder="Type your message...">
+        <div id="mic-button-container">
+            <button id="mic-button" title="Voice Input" style="background: none; border: none;">
+                <img style="width:25px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/mic.svg">
+            </button>
+        </div>
+        <div id="result"></div>
+        <button id="send-button" title="send-button">
+            <img style="width:25px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/send.svg">
+        </button>
+    </div>
+</div>
+
+<!-- Load CSS files -->
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/Sia.css' %}">
+{% endblock %}
+
+<!-- Load JS files -->
+{% block js %}
+<script>
+    var userName = "{{ name }}";
+</script>
+
+<script src="{% static 'js/Sia.js' %}"></script>
+{% endblock %}
+
+
+{% endblock body %}

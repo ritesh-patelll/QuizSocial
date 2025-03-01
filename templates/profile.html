@@ -1,0 +1,549 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block head %}
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dum Dum Social: Profile</title>
+  
+  <link href="{% static "css/profile.css" %}" rel="stylesheet">
+  <script src="{% static "js/copy.js" %}"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+{% endblock head %}
+
+{% block body %}
+
+{% if not movie_data %}
+  {% if not series_data %}
+    {% if not movie_dropdown_list %}
+      {% if not series_dropdown_list %}
+        <div class="container">
+          <div class='discla'>
+            <h4>Your quiz score cards and leaderboard will show up here once you complete at least one of the quizzes.</h4>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}
+
+<section>
+  {% if movie_dropdown_list %}
+    {% if series_dropdown_list %}
+      <div class="actionBtns">
+        <button class="actionBtn lmsBtn">Movies</button>
+        <button class="actionBtn lssBtn">Series</button>
+        <button class="moveBtn lbtoggleBtn">Movies</button>
+      </div>
+    {% endif %}
+  {% endif %}
+  {% if movie_dropdown_list %}
+    <div class="leaderboard_movie_section">
+      <div class="profile_heading">
+        <div class="profile_heading_asserts_text">
+          <div class="profile_heading_asserts profile_heading_asserts1">
+              <img class="profile_heading_asserts_img1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard1.svg' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts2">
+              <img class="profile_heading_asserts_img2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard2.gif' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts3">
+              <img class="profile_heading_asserts_img3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard3.gif' %}">
+          </div>
+          <div class="profile_heading_text profile_heading_text1">LEADERBOARD</div>
+          <div class="profile_heading_text profile_heading_text2">MOVIES</div>
+        </div>
+      </div>
+      <div class="leadertextandtable">
+        <div id="leadertext">
+          <select id="movie_dropdown" class="dropdown">
+          </select>
+        </div>
+        <div id="leadertableout">
+          <div class='content-loader' id='movie_content-loader'>
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+          </div>
+          <div id="leadertablein">
+            <div id="top_three">
+              <div id="movie_secondsmallcircle" class="smallcircleout">
+              </div>
+              <div id="movie_largecircle" class="largecircleout">
+              </div>
+              <div id="movie_thirdsmallcircle" class="smallcircleout">
+              </div>
+            </div>
+            <div id="movie_rest_pos" class="rest_pos">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if series_dropdown_list %}
+    <div class="leaderboard_series_section">
+      <div class="profile_heading">
+        <div class="profile_heading_asserts_text">
+          <div class="profile_heading_asserts profile_heading_asserts1">
+              <img class="profile_heading_asserts_img1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard1.svg' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts2">
+              <img class="profile_heading_asserts_img2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard2.gif' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts3">
+              <img class="profile_heading_asserts_img3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard3.gif' %}">
+          </div>
+          <div class="profile_heading_text profile_heading_text1">LEADERBOARD</div>
+          <div class="profile_heading_text profile_heading_text2">SERIES</div>
+        </div>
+      </div>
+      <div class="leadertextandtable">
+        <div id="leadertext">
+          <select id="series_dropdown" class="dropdown">
+          </select>
+        </div>
+        <div id="leadertableout">
+          <div class='content-loader' id='series_content-loader'>
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+          </div>
+          <div id="leadertablein">
+            <div id="top_three">
+              <div id="series_secondsmallcircle" class="smallcircleout">
+              </div>
+              <div id="series_largecircle" class="largecircleout">
+              </div>
+              <div id="series_thirdsmallcircle" class="smallcircleout">
+              </div>
+            </div>
+            <div id="series_rest_pos" class="rest_pos">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+
+<section>
+  {% if movie_data %}
+    {% if series_data %}
+      <div class="actionBtns">
+        <button class="actionBtn smsBtn">Movies</button>
+        <button class="actionBtn sssBtn">Series</button>
+        <button class="moveBtn sctoggleBtn">Movies</button>
+      </div>
+    {% endif %}
+  {% endif %}
+  {% if movie_data %}
+    <div class="scorecard_movie_section">
+      <div class="profile_heading">
+        <div class="profile_heading_asserts_text">
+          <div class="profile_heading_asserts profile_heading_asserts1">
+              <img class="profile_heading_asserts_img1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard1.svg' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts2">
+              <img class="profile_heading_asserts_img2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard2.gif' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts3">
+              <img class="profile_heading_asserts_img3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard3.gif' %}">
+          </div>
+          <div class="profile_heading_text profile_heading_text1">SCORECARDS</div>
+          <div class="profile_heading_text profile_heading_text2">MOVIES</div>
+        </div>
+      </div>
+      <div style="background-image: url('https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/leaderboard_content_bg.png');padding: 40px 0px;background-position: center center;">
+        <div class="container">
+          <div class="allcard" id="allcard">
+            {% for movie_img in movie_data %}
+              <div class="card">
+                <a id="{{ movie_img.card }}" onClick="showresult(this.id, '{{movie_img.type_}}', '{{movie_img.type_wiki_id}}')" class="nav-link">
+                  {% static "" as baseUrl %}
+                  <img class="quizsocial-img" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{{ baseUrl }}img/usercard/{{movie_img.card}}" class="correct-color">
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if series_data %}
+    <div class="scorecard_series_section">
+      <div class="profile_heading">
+        <div class="profile_heading_asserts_text">
+          <div class="profile_heading_asserts profile_heading_asserts1">
+              <img class="profile_heading_asserts_img1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard1.svg' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts2">
+              <img class="profile_heading_asserts_img2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard2.gif' %}">
+          </div>
+          <div class="profile_heading_asserts profile_heading_asserts3">
+              <img class="profile_heading_asserts_img3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/leaderboard3.gif' %}">
+          </div>
+          <div class="profile_heading_text profile_heading_text1">SCORECARDS</div>
+          <div class="profile_heading_text profile_heading_text2">SERIES</div>
+        </div>
+      </div>
+      <div style="background-image: url('https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/leaderboard_content_bg.png');padding: 40px 0px;background-position: center center;">
+        <div class="container">
+          <div class="allcard" id="allcard">
+            {% for series_img in series_data %}
+              <div class="card">
+                <a id="{{ series_img.card }}" onClick="showresult(this.id, '{{series_img.type_}}', '{{series_img.type_wiki_id}}')" class="nav-link">
+                  {% static "" as baseUrl %}
+                  <img class="quizsocial-img" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{{ baseUrl }}img/usercard/{{series_img.card}}" class="correct-color">
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<div class="bg-modal1">
+  <div class="modal-contents1">
+    <a class="exit1" type="button">✖</a>
+    {% static "" as baseUrl %}
+    <img class="quizsocial-img2" src='' class="correct-color">
+    <div id='in-chara1' class='in-chara1'>
+      <p>Copied!</p>
+    </div>
+    <div id='in-chara2' class='in-chara2'>
+      <p>Copied!</p>
+    </div>
+    <div class="btn-group1">
+      <a class='fb' onClick=downloadlink() type="submit">Download</a>
+      <a class='fb' onClick=sharequiz() type="submit">Share Quiz</a>
+      {% comment %} <a class='fb' style="display: none;" id='copyBtn' type="submit">Copy Image</a> {% endcomment %}
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+  var id2 = '';
+  var type_ = "";
+  var type_id = "0";
+  var type_title = "";
+  var type_other = "";
+  var None = false;
+  var False = false;
+  var True = true;
+  var movie_data = {{ movie_data|safe }};
+  var series_data = {{ series_data|safe }};
+  var movie_dropdown_list = {{ movie_dropdown_list|safe }};
+  var series_dropdown_list = {{ series_dropdown_list|safe }};
+
+  const lmsBtn = document.querySelector(".lmsBtn");
+  const lssBtn = document.querySelector(".lssBtn");
+  const lbtoggleBtn = document.querySelector(".lbtoggleBtn");
+  const lms = document.querySelector(".leaderboard_movie_section");
+  const lss = document.querySelector(".leaderboard_series_section");
+  const smsBtn = document.querySelector(".smsBtn");
+  const sssBtn = document.querySelector(".sssBtn");
+  const sctoggleBtn = document.querySelector(".sctoggleBtn");
+  const sms = document.querySelector(".scorecard_movie_section");
+  const sss = document.querySelector(".scorecard_series_section");
+  const width = 320; // We will scale the photo width to this
+  
+  let height = 0; // This will be computed based on the input stream
+  let streaming = false;
+  let video = null;
+  let canvas = null;
+  let startbutton = null;
+
+  function showresult(clicked, t, t_i) {
+    id2 = clicked;
+    type_ = t;
+    type_id = t_i;
+    document.querySelector('.bg-modal1').style.display = "flex";
+    document.querySelector('.quizsocial-img2').src = 'https://quiz-social-static-and-media-files.s3.amazonaws.com{{ baseUrl }}img/usercard/' + id2;
+  }
+
+  document.querySelector('.exit1').addEventListener("click", function() {
+    document.querySelector('.bg-modal1').style.display = "none";
+  });
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents1");
+    if (!container.is(e.target) && container.has(e.target).length === 0){
+      document.querySelector('.bg-modal1').style.display = "none";
+    }
+  });
+
+  function downloadlink() {
+    window.location.href = '/download' + '/' + id2;
+  }
+
+  function sharequiz() {
+    navigator.clipboard.writeText('https://dumdumsocial.com/' + type_ + '/' + type_id);
+    document.getElementById('in-chara1').style.display = "flex";
+    setTimeout(() => {  document.getElementById('in-chara1').style.display = "none"; }, 1000);
+  }
+
+  Object.entries(movie_dropdown_list).forEach(([key, value]) => {
+    $("select#movie_dropdown").append(
+        $('<option></option>').val(key).html(value)
+    );
+  });
+
+  Object.entries(series_dropdown_list).forEach(([key, value]) => {
+    $("select#series_dropdown").append(
+        $('<option></option>').val(key).html(value)
+    );
+  });
+
+  let handleSubmit = async (selected_ddv, type_) => {
+    let response = await fetch(`/getting_leaderboard_data/?selected_ddv=${selected_ddv}&type_=${type_}`)
+    let data = await response.json()
+
+    const up_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16" style="fill: #54e103;"><path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"></path></svg>'
+    const down_icon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16" style="fill: #ec2626;"><path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"></path></svg>'
+
+    while (document.querySelector("#" + type_ + "_largecircle").hasChildNodes()) {
+      document.querySelector("#" + type_ + "_largecircle").removeChild(document.querySelector("#" + type_ + "_largecircle").firstChild);
+    }
+
+    while (document.querySelector("#" + type_ + "_secondsmallcircle").hasChildNodes()) {
+      document.querySelector("#" + type_ + "_secondsmallcircle").removeChild(document.querySelector("#" + type_ + "_secondsmallcircle").firstChild);
+    }
+
+    while (document.querySelector("#" + type_ + "_thirdsmallcircle").hasChildNodes()) {
+      document.querySelector("#" + type_ + "_thirdsmallcircle").removeChild(document.querySelector("#" + type_ + "_thirdsmallcircle").firstChild);
+    }
+
+    while (document.querySelector("#" + type_ + "_rest_pos").hasChildNodes()) {
+      document.querySelector("#" + type_ + "_rest_pos").removeChild(document.querySelector("#" + type_ + "_rest_pos").firstChild);
+    }
+
+    for (let pos=0; pos < 10; pos++) {
+      try {
+        var username = Object.keys(data.leaderboard_list)[pos]
+        var points = data.leaderboard_list[Object.keys(data.leaderboard_list)[pos]].point
+        var prev_ranks = data.leaderboard_list[Object.keys(data.leaderboard_list)[pos]].prev_rank
+      }
+      catch(err) {
+        var username = '---'
+        var points = '-';
+        var prev_ranks = 1;
+      }
+      if (pos == 0) {
+        let one_character = `<div id="largecirclein">
+                              <div id="crown">
+                                <img width="30" height="30" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/crown.svg' %}">
+                              </div>
+                              <div id="firholder">${pos+1}</div>
+                              <div id="fircircle">${username}</div>
+                            </div>
+                            <div>${points + '&nbsp;Pts'}</div>`
+
+        document.querySelector("#" + type_ + "_largecircle").insertAdjacentHTML('beforeend', one_character)
+      }
+
+      else if (pos == 1) {
+        let one_character = `<div id="smallcirclein">
+                              <div id="secholder">${pos+1}</div>
+                              <div id="seccircle">${username}</div>
+                            </div>
+                            <div>${points + '&nbsp;Pts'}</div>`
+        document.querySelector("#" + type_ + "_secondsmallcircle").insertAdjacentHTML('beforeend', one_character)
+      }
+
+      else if (pos == 2) {
+        let one_character = `<div id="smallcirclein">
+                              <div id="thiholder">${pos+1}</div>
+                              <div id="thicircle">${username}</div>
+                            </div>
+                            <div>${points + '&nbsp;Pts'}</div>`
+        document.querySelector("#" + type_ + "_thirdsmallcircle").insertAdjacentHTML('beforeend', one_character)
+      }
+
+      else {
+        var odev = "";
+        if (((pos+1)%2) == 0) {
+          odev = "evenpos";
+        }else {
+          odev = "oddpos";
+        }
+        if (pos < 9) {
+          new_pos = '&nbsp;' + (pos + 1).toString();
+        }
+        else {
+          new_pos = (pos + 1).toString();
+        }
+        if (prev_ranks >= (pos+1) ) {
+          rank_icon = up_icon
+        }
+        else {
+          rank_icon = down_icon
+        }
+        let one_character = `<div id="${odev}">
+                              <div id="updown">
+                                <div style="margin: 0px 5px;">
+                                  ${new_pos}
+                                </div>
+                                ${rank_icon}
+                                <div>
+                                  ${'&nbsp;&nbsp;' + username}
+                                </div>
+                              </div>
+                              <div>
+                                ${points + '&nbsp;Pts'}
+                              </div>
+                            </div>`
+        document.querySelector("#" + type_ + "_rest_pos").insertAdjacentHTML('beforeend', one_character)
+      }
+    }
+    if (data.user_deat.prev_rank >= (data.user_deat.rank) ) {
+      rank_icon = up_icon
+    }
+    else {
+      rank_icon = down_icon
+    }
+    let one_character = `<div id="custom_bar">
+                          <div id="updown">
+                            <div style="margin: 0px 5px;">
+                              ${data.user_deat.rank}
+                            </div>
+                            ${rank_icon}
+                            <div>
+                              ${'&nbsp;&nbsp;Your Current Rank'}
+                            </div>
+                          </div>
+                          <div>
+                            ${data.user_deat.point + '&nbsp;Pts'}
+                          </div>
+                        </div>`
+    document.querySelector("#" + type_ + "_rest_pos").insertAdjacentHTML('beforeend', one_character)
+    document.getElementById(type_ + "_content-loader").style.display = 'none';
+    return 'created'
+  }
+  function listmQ(){
+    document.getElementById('movie_content-loader').style.display = 'flex';
+    handleSubmit(this.value, 'movie')
+  }
+  function listsQ(){
+    document.getElementById('series_content-loader').style.display = 'flex';
+    handleSubmit(this.value, 'series')
+  }
+
+  if (movie_data || series_data) {
+    if (movie_data && series_data) {
+      sss.style.display = "none";
+      sms.style.display = "block";
+      lbtoggleBtn.innerHTML = "Movies";
+
+      sssBtn.addEventListener("click",()=>{
+        sctoggleBtn.classList.add("rightBtn");
+        sss.style.display = "block";
+        sms.style.display = "none";
+        sctoggleBtn.innerHTML = "Series";
+      })
+    
+      smsBtn.addEventListener("click",()=>{
+        sctoggleBtn.classList.remove("rightBtn");
+        sss.style.display = "none";
+        sms.style.display = "block";
+        sctoggleBtn.innerHTML = "Movies";
+      })
+    
+      sctoggleBtn.addEventListener("click",()=>{
+        if (sctoggleBtn.classList.contains("rightBtn")) {
+          sctoggleBtn.classList.remove("rightBtn");
+          sss.style.display = "none";
+          sms.style.display = "block";
+          sctoggleBtn.innerHTML = "Movies";
+        } else {
+          sctoggleBtn.classList.add("rightBtn");
+          sss.style.display = "block";
+          sms.style.display = "none";
+          sctoggleBtn.innerHTML = "Series";
+        }
+      })
+    }
+    else if (movie_data) {
+      sms.style.display = "block";
+    }
+    else if (series_data) {
+      sss.style.display = "block";
+    }
+  }
+
+  if (movie_dropdown_list || series_dropdown_list) {
+    if (movie_dropdown_list && series_dropdown_list) {
+      lss.style.display = "none";
+      lms.style.display = "block";
+      lbtoggleBtn.innerHTML = "Movies";
+
+      lssBtn.addEventListener("click",()=>{
+        lbtoggleBtn.classList.add("rightBtn");
+        lss.style.display = "block";
+        lms.style.display = "none";
+        lbtoggleBtn.innerHTML = "Series";
+      })
+    
+      lmsBtn.addEventListener("click",()=>{
+        lbtoggleBtn.classList.remove("rightBtn");
+        lss.style.display = "none";
+        lms.style.display = "block";
+        lbtoggleBtn.innerHTML = "Movies";
+      })
+    
+      lbtoggleBtn.addEventListener("click",()=>{
+        if (lbtoggleBtn.classList.contains("rightBtn")) {
+          lbtoggleBtn.classList.remove("rightBtn");
+          lss.style.display = "none";
+          lms.style.display = "block";
+          lbtoggleBtn.innerHTML = "Movies";
+        } else {
+          lbtoggleBtn.classList.add("rightBtn");
+          lss.style.display = "block";
+          lms.style.display = "none";
+          lbtoggleBtn.innerHTML = "Series";
+        }
+      })
+    }
+    else if (movie_dropdown_list) {
+      lms.style.display = "block";
+    }
+    else if (series_dropdown_list) {
+      lss.style.display = "block";
+    }
+  }
+
+  if (movie_dropdown_list) {
+    document.querySelector("select#movie_dropdown").onchange = listmQ;
+    document.getElementById('movie_content-loader').style.display = 'flex';
+    handleSubmit(document.querySelector("select#movie_dropdown").value, 'movie')
+  }
+
+  if (series_dropdown_list) {
+    document.querySelector("select#series_dropdown").onchange = listsQ;
+    document.getElementById('series_content-loader').style.display = 'flex';
+    handleSubmit(document.querySelector("select#series_dropdown").value, 'series')
+  }
+
+</script>
+{% endblock body %}

@@ -1,0 +1,567 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load embed_video_tags %}
+
+{% block head %}
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dum Dum Social: Referral Program</title>
+  
+  <link href="{% static "css/referral_program.css" %}" rel="stylesheet">
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+  
+{% endblock head %}
+
+{% block body %}
+{% if first_referral %}
+    <div class="actionBtns">
+        <button class="actionBtn rpsBtn">Referral Program</button>
+        <button class="actionBtn rdsBtn">Referral Dashboard</button>
+        <button class="moveBtn rstoggleBtn">Referral Program</button>
+    </div>
+{% endif %}
+<section  class="referral_dashboard_section">
+    <div class="referral_dashboard">
+        <div class="referral_dashboard_main">
+            <div style="position: relative;transform: rotate(-8deg);display: flex;align-content: center;justify-content: center;align-items: center;">
+                <img class="referral_dashboard_main_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard2.svg' %}">
+                <h1 class="h1text">
+                    Referral
+                    <br>
+                    Dashboard
+                </h1>
+                <div class="referral_dashboard_main_img referral_dashboard_main_img1">
+                    <img class="referral_dashboard_main_img_size1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard1.svg' %}">
+                </div>
+                <div class="referral_dashboard_main_img referral_dashboard_main_img2">
+                    <img class="referral_dashboard_main_img_size2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard3.svg' %}">
+                </div>
+                <div class="referral_dashboard_main_img referral_dashboard_main_img3">
+                    <img class="referral_dashboard_main_img_size3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard4.svg' %}">
+                </div>
+                <div class="referral_dashboard_main_img referral_dashboard_main_img4">
+                    <div style="position: relative;display: flex;align-items: center;justify-content: center;align-content: center;">
+                        <h4 class="h4text">
+                            First Referral:
+                            <br>
+                            {{ first_referral }}
+                        </h4>
+                    </div>
+                    <img class="referral_dashboard_main_img_size4" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard5.svg' %}">
+                </div>
+            </div>
+        </div>
+        <div class="referral_dashboard_details">
+            <div class="referral_dashboard_details_row1">
+                <div class="referral_dashboard_details_box">
+                    <div class="referral_dashboard_details_text">
+                        Current Referrals: <span> ${{ current_referrals }} </span>
+                    </div>
+                    <div class="referral_dashboard_details_img" style=" background: #FF8E51; left: -27px; ">
+                        <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard_details1.svg' %}">
+                    </div>
+                </div>
+                <div class="referral_dashboard_details_row1_row2">
+                    <div class="referral_dashboard_details_box">
+                        <div class="referral_dashboard_details_text">
+                            Social: <span> ${{ social}} </span>
+                        </div>
+                        <div class="referral_dashboard_details_img" style=" background: #F6CD46; left: -39px; ">
+                            <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term5.svg' %}">
+                        </div>
+                    </div>
+                    <div class="referral_dashboard_details_box">
+                        <div class="referral_dashboard_details_text">
+                            Super Social: <span> ${{ ssocial}} </span>
+                        </div>
+                        <div class="referral_dashboard_details_img" style=" background: #FF8E51; left: -33px; ">
+                            <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term6.svg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="referral_dashboard_details_box">
+                    <div class="referral_dashboard_details_text">
+                        Super Duper Social: <span> ${{ sdsocial }} </span>
+                    </div>
+                    <div class="referral_dashboard_details_img" style=" background: #FF8E51; left: -33px; ">
+                        <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term7.svg' %}">
+                    </div>
+                </div>
+                <div class="referral_dashboard_details_box">
+                    <div class="referral_dashboard_details_text">
+                        Fan Social: <span> ${{ fsocial }} </span>
+                    </div>
+                    <div class="referral_dashboard_details_img" style=" background: #FF8E51; left: -33px; ">
+                        <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term7.svg' %}">
+                    </div>
+                </div>
+            </div>
+            {% if country %}
+                <div>
+                    <select id="country_dropdown" class="dropdown">
+                    </select>
+                </div>
+            {% endif %}
+            <div class="referral_dashboard_details_row2">
+                {% if verified %}
+                    <div class="referral_dashboard_details_box" style=" font-size: 31.4px; border-width: 2px 2px 2px; border-style: solid; border-color: rgb(0 0 0); padding: 20px 20px; border-radius: 10px; background: white; min-width: 350px; display: flex; flex-direction: row; justify-content: space-between; ">
+                        <div>
+                            <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term3.svg' %}">
+                        </div>
+                        <div>
+                            Verified Identity
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="referral_dashboard_details_box">
+                            <div class="referral_dashboard_details_text">
+                                <a onClick=stripeaccount() class="button is-info">Verify Identity</a>
+                            </div>
+                        </div>
+                {% endif %}
+                <div class="referral_dashboard_details_box">
+                    {% if withdraw %}
+                        <div class="referral_dashboard_details_text">
+                            <a href="{% url 'WithdrawMoneyFromStripeAccount' %}" class="button is-info">Withdraw Money</a>
+                        </div>
+                        {% else %}
+                            <div class="referral_dashboard_details_text">
+                                Withdraw Money
+                            </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="referral_dashboard_details_row3">
+                <div class="referral_dashboard_details_box">
+                    <div class="referral_dashboard_details_text">
+                        Lifetime Earnings: <span> ${{ lifetime_earnings }} </span>
+                    </div>
+                    <div class="referral_dashboard_details_img" style=" background: #9C8BEF; left: -40px; ">
+                        <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard_details2.svg' %}">
+                    </div>
+                </div>
+                <div class="referral_dashboard_details_box">
+                    <div class="referral_dashboard_details_text">
+                        Lifetime Withdrawal: <span> ${{ lifetime_withdrawal }} </span>
+                    </div>
+                    <div class="referral_dashboard_details_img" style=" background: #F9B2DC; left: -33px; ">
+                        <img class="referral_dashboard_details_img_size" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/referral-dashboard_details3.svg' %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+<section class="referral_program_section">
+    <div class="referral_program_section_text">
+        <div class="rl_discr_text">
+            <div class="rl_header_img rl_header_img1">
+                <img class="rl_header_img_svg1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/heart.svg' %}">
+            </div>
+            <div class="rl_header_img rl_header_img2">
+                <img class="rl_header_img_svg2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/rl1.svg' %}">
+            </div>
+            <div class="rl_header_img rl_header_img3">
+                <img class="rl_header_img_svg3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/rl2.svg' %}">
+            </div>
+            <div class="rl_header_img rl_header_img4">
+                <img class="rl_header_img_svg4" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/heart.svg' %}">
+            </div>
+            Earn upto
+            <br>
+            <span style=" color: #28C878; "> $36 </span> per referral
+            <br>
+            per year!
+        </div>
+    </div>
+    <div style="display: flex;position: relative;justify-content: center;align-items: center;">
+        <div class="copy_box">
+            <div id="in-chara1" class="in-chara1" style="display: none;">
+                <p>Copied!</p>
+            </div>
+            <a onClick=copylink() style=" padding-right: 20px; ">
+                <img class="copysvg" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/copy.svg' %}">
+            </a>
+            <div class="displaylink" id="displaylink">dumdumsocial.com/ref/{{code}}</div>
+        </div>
+    </div>
+    <div class="yv_sec">
+        <div class="yv_heading">
+            <div class="yv_heading_text">
+                What will you promote?
+            </div>
+        </div>
+        <div class="yv_discr_img">
+            <img style="height: 73px;transform: rotate(208.89888985deg);" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/youtube_arrrow_gif.gif">
+        </div>
+        <div class="yv_discr_box">
+            {% video videos.video %}
+        </div>
+    </div>
+    <div class="offer_sec">
+        
+        <div class="offer_heading">
+            
+            <div class="offer_heading_text">
+                Our Offer For You!
+            </div>
+            
+        </div>
+        <div class="offer_discr">
+            <div class="offer_discr_box">
+                <div class="offer_discr_img">
+                    <img class="offer1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/offer1.svg">
+                </div>
+                <div class="offer_discr_text">
+                    <h4>For each <span> Social </span> subscription referral, you will earn <span> $1 </span> per user per month.</h4>
+                </div>
+            </div>
+            <div class="offer_discr_box">
+                <div class="offer_discr_img">
+                    <img class="offer2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/offer2.svg">
+                </div>
+                <div class="offer_discr_text">
+                    <h4>For each <span> Super Social </span> subscription referral, you will earn <span> $2 </span> per user per month.</h4>
+                </div>
+            </div>
+            <div class="offer_discr_box">
+                <div class="offer_discr_img">
+                    <img class="offer3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/offer3.svg">
+                </div>
+                <div class="offer_discr_text">
+                    <h4>For each <span> Super Duper Social </span> subscription referral, you will earn <span> $3 </span> per user per month.</h4>
+                </div>
+            </div>
+        </div>
+        <div class="offer_discr">
+            <div class="offer_discr_box">
+                <div class="offer_discr_img">
+                    <img class="offer4" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/offer4.gif">
+                </div>
+                <div class="offer_discr_text">
+                    <h4>For each <span> Fan Social </span> subscription referral, you will earn <span> $9 </span> per user per month.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="earn_sec">
+        <div class="earn_heading">
+            
+            <div class="earn_heading_text">
+                How much can
+                <br>
+                you earn?
+            </div>
+            
+        </div>
+        <div class="earn_discr">
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn1.svg">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>1. If <span> user A </span> continues their subscription in the <span> second month </span>, you will keep earning.</h4>
+                </div>
+            </div>
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn2.svg">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>2. You can keep earning from <span> user A </span> for a maximum of <span> 24 months</span>.</h4>
+                </div>
+            </div>
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn3.svg">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>3. That means every <span> Social </span> referral, can earn you upto <span> $24 </span> in <span> 24 months</span>.</h4>
+                </div>
+            </div>
+        </div>
+        <div class="earn_discr">
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn4" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn4.gif">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>4. That means every <span> Super Social </span> referral, can earn you upto <span> $48 </span> in <span> 24 months</span>.</h4>
+                </div>
+            </div>
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn5" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn5.gif">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>5. That means every <span> Super Duper Social </span> referral, can earn you upto <span> $72 </span> in <span> 24 months</span>.</h4>
+                </div>
+            </div>
+            <div class="earn_discr_box">
+                <div class="earn_discr_img">
+                    <img class="earn6" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/earn6.gif">
+                </div>
+                <div class="earn_discr_text">
+                    <h4>6. That means every <span> Fan Social </span> referral, can earn you upto <span> $216 </span> in <span> 24 months</span>.</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table_sec">
+        <div class="table_heading">
+            <div class="table_heading_text">
+                Your earnings if 1% of your followers subscribed to <a style=" text-decoration: underline; " href='/membership/'> Social</a>.
+            </div>
+        </div>
+        <table>
+            <tr>
+            <th><span> Follower Count</span></th>
+            <th><span> 1% of your followers</span></th>
+            <th><span> 1 Month Earnings</span></th>
+            <th><span> 12 Month Earnings</span></th>
+            <th><span> 24 Month Earnings</span></th>
+            </tr>
+            <tr>
+            <td><span> 10k </span></td>
+            <td>100</td>
+            <td>$100</td>
+            <td><span> $1.2k </span></td>
+            <td>$2.4k</td>
+            </tr>
+            <tr>
+            <td><span> 50k </span></td>
+            <td>500</td>
+            <td>$500</td>
+            <td><span> $6k </span></td>
+            <td>$12k</td>
+            </tr>
+            <tr>
+            <td><span> 100k </span></td>
+            <td>1k</td>
+            <td>$1k</td>
+            <td><span> $12k </span></td>
+            <td>$24k</td>
+            </tr>
+            <tr>
+            <td><span> 1 Mil. </span></td>
+            <td>10K</td>
+            <td>$10k</td>
+            <td><span> $120k </span></td>
+            <td>$240k</td>
+            </tr>
+            <tr>
+            <td><span> 5 Mil. </span></td>
+            <td>50k</td>
+            <td>$50k</td>
+            <td><span> $600k </span></td>
+            <td>$1.2 Mil.</td>
+            </tr>
+            <tr>
+            <td><span> 10 Mil. </span></td>
+            <td>100k</td>
+            <td>$100k</td>
+            <td><span> $1.2 Mil. </span></td>
+            <td>$2.4 Mil.</td>
+            </tr>
+            <tr>
+            <td><span> 100 Mil. </span></td>
+            <td>1 Mil.</td>
+            <td>$1 Mil.</td>
+            <td><span> $12 Mil. </span></td>
+            <td>$24 Mil.</td>
+            </tr>
+        </table>
+    </div>
+    <div class="term_sec">
+        <div class="term_heading">
+            
+            <div class="term_heading_text">
+                Terms &amp; Conditions!
+            </div>
+            
+        </div>
+        <div class="term_discr">
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img1">
+                    <img class="term1" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term1.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>1. The user must <span> subscribe within 60 days </span> of clicking on your referral link.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img2">
+                    <img class="term2" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term2.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>2. Once you reach a balance of <span> $20</span>, you can withdraw your earnings.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img3">
+                    <img class="term3" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term3.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>3. Your <span> identity </span> will be <span> verified </span> before you can withdraw.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img4">
+                    <img class="term4" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term4.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>4. Once you share your <span> bank details</span>, we will transfer the money.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img5">
+                    <img class="term5" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term5.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>5. <span> 60 day period </span> starts only if the user <span> creates an account </span> after clicking on your link.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img term_discr_img6">
+                    <img class="term6" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term6.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>6. If <span> User A subscribes </span> after clicking links from <span> two influencers</span>, the <span> last link clicked </span> gets the referral.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_img  term_discr_img7">
+                    <img class="term7" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/term7.svg">
+                </div>
+                <div class="term_discr_text">
+                    <h4>7. <span> Future T&amp;C changes </span> won't affect <span> referrals </span> that were started <span> before </span> the change <span> announcement</span>.</h4>
+                </div>
+            </div>
+            <div class="term_discr_box">
+                <div class="term_discr_text">
+                    <h4><a style=" text-decoration: underline; " href="/_link/?link=https%3A%2F%2Fwa.me%2F%2B918860623125%3Ftext%3DI%25E2%2580%2599m%2Ba%2BDum%2BDum%2BSocial%2Buser&target=FwfbNxh9ImE4OX%2Bb7yDDcmyd0JoXctM%2BaxkQJ3GbgJxbNkuiWzlMEGHmg%2BfdSzAmvhRS%2BYUh6fZEDkKoNR9ibqnUNe5GoGDquAna0tmQSsWjnMwjs6k1dsHSGiz%2BUSPrIO12D%2FK%2BIuPkkrIH3Ej27Ycw9R5oHsVXK2kEc3WwR49fk6qu3%2Fv%2B&iv=04sY09QoZgeEil4A"> Click here for a smooth onboarding. </a></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    var first_referral = new Date("{{ first_referral|safe }}");
+    var None = false;
+    var country_code_list = {{ country_code|safe }};
+    var country = "{{ country|safe }}";
+
+    const rpsBtn = document.querySelector(".rpsBtn");
+    const rdsBtn = document.querySelector(".rdsBtn");
+    const rstoggleBtn = document.querySelector(".rstoggleBtn");
+    const rps = document.querySelector(".referral_program_section");
+    const rds = document.querySelector(".referral_dashboard_section");
+
+    if (first_referral) {
+        rdsBtn.addEventListener("click",()=>{
+            rstoggleBtn.classList.add("rightBtn");
+            rds.style.display = "block";
+            rps.style.display = "none";
+            rstoggleBtn.innerHTML = "Referral Dashboard";
+        })
+
+        rpsBtn.addEventListener("click",()=>{
+            rstoggleBtn.classList.remove("rightBtn");
+            rds.style.display = "none";
+            rps.style.display = "block";
+            rstoggleBtn.innerHTML = "Referral Program";
+        })
+
+        rstoggleBtn.addEventListener("click",()=>{
+            if (rstoggleBtn.classList.contains("rightBtn")) {
+            rstoggleBtn.classList.remove("rightBtn");
+            rds.style.display = "none";
+            rps.style.display = "block";
+            rstoggleBtn.innerHTML = "Referral Program";
+            } else {
+            rstoggleBtn.classList.add("rightBtn");
+            rds.style.display = "block";
+            rps.style.display = "none";
+            rstoggleBtn.innerHTML = "Referral Dashboard";
+            }
+        })
+    }
+    
+    function copylink() {
+        navigator.clipboard.writeText(document.getElementById("displaylink").innerHTML);
+        document.getElementById('in-chara1').style.display = "block";
+          setTimeout(() => {  document.getElementById('in-chara1').style.display = "none"; }, 1000);
+    }
+
+    Object.entries(country_code_list).forEach(([key, value]) => {
+        if (key == country) {
+            $("select#country_dropdown").append(
+                $('<option selected="selected"></option>').val(key).html(value)
+            );
+            
+        }else {
+            $("select#country_dropdown").append(
+                $('<option></option>').val(key).html(value)
+            );
+        }
+    });
+
+    let handleSubmit = async (selected_ddv) => {
+        let response = await fetch(`/change/country/?country=${selected_ddv}`)
+        let data = await response.json()
+        if (data.status == 'done') {
+            country = selected_ddv
+        }
+        return 'done'
+    }
+
+    let stripecountrycheck = async () => {
+        let response = await fetch(`/authorize/`)
+        let data = await response.json()
+        if (data.status == 'nope') {
+            swal({
+                text: "Sorry, It is not currently available in your country.",
+                dangerMode: true
+            })
+        }else {
+            window.location.href = data.link;
+        }
+        return 'done'
+    }
+
+    function listmQ(){
+        handleSubmit(this.value)
+    }
+
+    document.querySelector("select#country_dropdown").onchange = listmQ;
+
+    function stripeaccount(){
+        if (country == "---") {
+            swal({
+                text: "Please select your country first",
+                dangerMode: true
+            })
+        }else {
+            stripecountrycheck()
+        }
+
+    }
+
+</script>
+{% endblock body %}

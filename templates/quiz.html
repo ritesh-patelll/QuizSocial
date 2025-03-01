@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1240244022868373" crossorigin="anonymous"></script>
+  {% load static %}
+  {% load characters_img %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  {% if movies %}
+    <title>Dum Dum Social: {{ movies.title }} {{ movies.release_date }} Quiz</title>
+    <meta property="og:title" content="Dum Dum Social: {{ movies.title }} {{ movies.release_date }} Quiz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+    <meta property="og:description" content="Take this {{ movies.title }} {{ movies.release_date }} quiz, and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta property="og:locale" content="en">
+    <meta property="og:site_name" content="Dum Dum Social">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@quiz_social">
+    <meta name="twitter:title" content="Dum Dum Social: movies Quiz | {{ movies.title }} | {{ movies.release_date }}">
+    <meta name="twitter:description" content="Take this {{ movies.title }} {{ movies.release_date }} quiz, and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+    <meta name="description" content="Take this {{ movies.title }} {{ movies.release_date }} quiz, and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta name="keywords" content="{{ movies.title }} quiz, {{ movies.title }} trivia, {{ movies.title }} trivia quiz, {{ movies.title }} quiz challenge, {{ movies.title }} trivia challenge, {{ movies.title }} quiz collection">
+    <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+    <link rel="home" href="https://dumdumsocial.com/"/>
+  {% endif %}
+
+  {% if series %}
+    <title>Dum Dum Social: {{ series.title }} {{ series.season }} Quiz</title>
+    <meta property="og:title" content="Dum Dum Social: {{ series.title }} {{ series.season }} Quiz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+    <meta property="og:description" content="Take this {{ series.title }} {{series.season }} quiz and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta property="og:locale" content="en">
+    <meta property="og:site_name" content="Dum Dum Social">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@quiz_social">
+    <meta name="twitter:title" content="Dum Dum Social: TV Show Quiz | {{ series.title }} | {{series.season }}">
+    <meta name="twitter:description" content="Take this {{ series.title }} {{series.season }} quiz and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+    <meta name="description" content="Take this {{ series.title }} {{series.season }} quiz and become a certified superfan. Also, meet other superfans on Zoom if you get 8 out of 10 MCQs right.">
+    <meta name="keywords" content="{{ series.title }} quiz, {{ series.title }} trivia, {{ series.title }} trivia quiz, {{ series.title }} quiz challenge, {{ series.title }} trivia challenge, {{ series.title }} quiz collection">
+    <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+    <link rel="home" href="https://dumdumsocial.com/"/>
+  {% endif %}
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+  {% include 'structured_data.html' %}
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="{% static "css/quiz.css" %}" rel="stylesheet">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2C5JXFPS2B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-2C5JXFPS2B');
+  </script>
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+</head>
+<body onload="myFunction()">
+  <div class='loader-wrapper' id='loader-wrapper'>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
+
+  <audio id="corrAudio">
+    <source src="{% static "sound_effects/correct_answer.mp3" %}" type="audio/mpeg">
+  </audio>
+  <audio id="wronAudio">
+    <source src="{% static "sound_effects/wrong_answer.mp3" %}" type="audio/mpeg">
+  </audio>
+
+  <div class="main">
+    <div class="protim-all">
+      <div class="protim">
+        <div class="protim-logo">
+          <div class="exit" id="exitBtn">✖</div>
+            <div class="progress">
+              <div class="progress-done" data-done="0">
+            </div>
+          </div>
+        </div>
+        <div class="protim-tim">
+          <div class="timer">
+            <div class="time_left_txt">Time Left</div>
+            <div class="timer_sec">300</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      {% for quiz in quiz_form %}
+      
+        <div class="tab">
+          
+          <div class="questionclass">
+            <h3>{{chara_img|characters_img:quiz.question|safe }}</h3>
+          </div>
+          <ul>
+            <div class="option" >
+              <input type="radio" class="option" name="{{quiz.id}}" id="{{quiz.dis1id}}" value="{{quiz.dis1}}" style="height:18px; width:18px; vertical-align: middle;" aria-label="...">
+              <label id="{{quiz.dis1id}}" for={{quiz.dis1id}}>{{chara_img|characters_img:quiz.dis1|safe }}</label>
+              <span class="input-group-text">
+                <img id="{{quiz.dis1id}}c" class='hide1' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/correct.svg' %}">
+                <img id="{{quiz.dis1id}}w" class='hide2' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/wrong.svg' %}">
+              </span>
+            </div>
+          </ul>
+          <div class="option" >
+            <input type="radio" class="option" name="{{quiz.id}}" id="{{quiz.dis2id}}" value="{{quiz.dis2}}" style="height:18px; width:18px; vertical-align: middle;" aria-label="...">
+            <label id="{{quiz.dis2id}}" for={{quiz.dis2id}}>{{chara_img|characters_img:quiz.dis2|safe }}</label>
+            <span class="input-group-text">
+              <img id="{{quiz.dis2id}}c" class='hide1' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/correct.svg' %}">
+              <img id="{{quiz.dis2id}}w" class='hide2' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/wrong.svg' %}">
+            </span>
+          </div>
+
+          <div class="option" >
+            <input type="radio" class="option" name="{{quiz.id}}" id="{{quiz.dis3id}}" value="{{quiz.dis3}}" style="height:18px; width:18px; vertical-align: middle;" aria-label="...">
+            <label id="{{quiz.dis3id}}" for={{quiz.dis3id}}>{{chara_img|characters_img:quiz.dis3|safe }}</label>
+            <span class="input-group-text">
+              <img id="{{quiz.dis3id}}c" class='hide1' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/correct.svg' %}">
+              <img id="{{quiz.dis3id}}w" class='hide2' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/wrong.svg' %}">
+            </span>
+          </div>
+          
+          <div class="option" >
+            <input type="radio" class="option" name="{{quiz.id}}" id="{{quiz.dis4id}}" value="{{quiz.dis4}}" style="height:18px; width:18px; vertical-align: middle;" aria-label="...">
+            <label id="{{quiz.dis4id}}" for={{quiz.dis4id}}>{{chara_img|characters_img:quiz.dis4|safe }}</label>
+            <span class="input-group-text">
+              <img id="{{quiz.dis4id}}c" class='hide1' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/correct.svg' %}">
+              <img id="{{quiz.dis4id}}w" class='hide2' src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/wrong.svg' %}">
+            </span>
+          </div>
+            
+        </div>
+        
+      {% endfor %}
+      
+    </div>
+    
+    <hr id="line">
+
+    <div class="footercontainer" id ="footercontainerid">
+      <div class="row1 align-items-start">
+        <div class="col" id ="symbolid">
+          <div class="report">
+            <button class="rep" type="button" id="reportBtn" onclick="reportfun()">
+              <img class="icon" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/report.svg' %}">
+              &nbsp;Report
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row3 align-items-end">
+        <div class="col">
+          <button class = "sub" type="submit" id="submitBtn" onclick="getanswers()">Check</button>
+          <button class = "nxt" type="button" id="nextBtn" onclick="nextPrev(1)">Continue</button>
+          <form class="report_result" method="POST" action="{{ link }}">
+            {% csrf_token %}
+            <input type="hidden" id="score" name="score" value="">
+            <input type="hidden" id="total_question" name="total_question" value="">
+            <input type="hidden" id="question" name="question" value="">
+            <input type="hidden" id="selectopt" name="selectopt" value="">
+            <button class = "res" type="next" id="homeBtn" onclick="">Next</button>
+          </form>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-modal">
+    <div class="modal-contents">
+
+      <div class='questionwronoption'>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Wrong Question" id="flexCheckDefault1">
+          <label class="form-check-label" for="flexCheckDefault1">
+            Wrong question
+          </label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Wrong Answer" id="flexCheckDefault2">
+          <label class="form-check-label" for="flexCheckDefault2">
+            Wrong answer
+          </label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Options are same" id="flexCheckDefault3">
+          <label class="form-check-label" for="flexCheckDefault3">
+            Options are same
+          </label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="Multiple options are correct" id="flexCheckDefault4">
+          <label class="form-check-label" for="flexCheckDefault4">
+            Multiple options are correct
+          </label>
+        </div>
+
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="No context provided" id="flexCheckDefault5">
+          <label class="form-check-label" for="flexCheckDefault5">
+            No context provided
+          </label>
+        </div>
+      </div>
+
+      <br>
+      <div class="coldiv">
+        <div class="undo">
+          <a class="und" type="button" id="undoBtn">Cancel</a>
+        </div>
+        <div class="confirm">
+          <a class="conf" type="button" id="confirmBtn">Confirm</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="bg-modal1">
+    <div class="modal-contents1">
+      <div class="rowdiv">
+        <h4><strong>Are you sure you want to quit?</strong>
+        <br>
+        You won't get another attempt for this movie.</h4>
+      </div>
+      <div class="col1div">
+        <div class="stay">
+          <a class="sta" type="button" id="stayBtn">Stay</a>
+        </div>
+        <div class="quit">
+          <a href="/" class="qui" type="button" id="quitBtn">Quit</a>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <div class="bg-modal2">
+    <div class="modal-contents2">
+      <a class="exit1" type="button">✖</a>
+      <img class="quizsocial-img2" src='' class="correct-color">
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var preloader = document.getElementById('loader-wrapper');
+
+    function myFunction(){
+      preloader.style.display = 'none';
+    }
+
+    var ans1 = {{ answer1|safe }};
+    var movie = {{ quiz_form|safe }};
+    const progress = document.querySelector('.progress-done');
+    progress.style.width = progress.getAttribute('data-done') + '%';
+    
+    var z = document.getElementsByClassName("tab");
+    var r = document.getElementsByClassName("result");
+    var total_question = '';
+    var question = [];
+    var optsel = []
+
+    var currentTab = 0;
+    var correctcount = 0;
+    var count_report = 0;
+    var correct_sound = document.getElementById("corrAudio");
+    var wrong_sound = document.getElementById("wronAudio");
+    
+    showTab(currentTab);
+    const timeText = document.querySelector(".timer .time_left_txt");
+    const timeCount = document.querySelector(".timer .timer_sec");
+    document.getElementById("total_question").value = movie[0].total_question;
+    document.getElementById("score").value = correctcount;
+
+    $('body').bind('copy paste cut drag drop', function (e) {
+      e.preventDefault();
+    });
+    
+    function startTimer(time){
+      counter = setInterval(timer, 1000);
+      function timer(){
+        timeText.textContent = "Time Left";
+        timeCount.textContent = time;
+        time--;
+        if(time < 9){
+          let addZero = timeCount.textContent;
+          timeCount.textContent = "0" + addZero;
+        }
+        if(time < 0){
+          clearInterval(counter);
+          timeText.textContent = "Time Left";
+          getanswers()
+        }
+      }
+    }
+
+    document.querySelector('.exit1').addEventListener("click", function() {
+      document.querySelector('.bg-modal2').style.display = "none";
+    });
+
+    $(document).mouseup(function(e){
+      var container = $(".modal-contents");
+      if (!container.is(e.target) && container.has(e.target).length === 0){
+        document.querySelector('.bg-modal').style.display = "none";
+      }
+    });
+
+    $(document).mouseup(function(e){
+      var container = $(".modal-contents1");
+      if (!container.is(e.target) && container.has(e.target).length === 0){
+        document.querySelector('.bg-modal1').style.display = "none";
+      }
+    });
+
+    $(document).mouseup(function(e){
+      var container = $(".modal-contents2");
+      if (!container.is(e.target) && container.has(e.target).length === 0){
+        document.querySelector('.bg-modal2').style.display = "none";
+      }
+    });
+
+    function showTab(n){
+      $(".option").attr("disabled",false);
+      z[n].style.display = "block";
+      progress.style.width = (currentTab+1)*(100/ans1.length) + "%";
+      progress.style.opacity = 1;
+      startTimer(299);
+      document.getElementById("homeBtn").style.display = "none";
+      document.getElementById("submitBtn").style.display = "inline";
+      document.getElementById("nextBtn").style.display = "none";
+    }
+
+    function playcorrAudio() {
+      correct_sound.play();
+    }
+
+    function playwronAudio() {
+      wrong_sound.play();
+    }
+    
+    function nextPrev(n){
+      if (currentTab == (z.length-1)){
+        $(".option").attr("disabled",true);
+
+        document.getElementById("submitBtn").style.display = "none";
+        document.getElementById("homeBtn").style.display = "inline";
+      }
+      else{
+        
+        z[currentTab].style.display = "none";
+        
+        currentTab = currentTab + n;
+        showTab(currentTab);
+      
+      }
+    }
+    document.getElementById('reportBtn').addEventListener("click", function() {
+      if (count_report != 5){
+        clearInterval(counter);
+        document.querySelector('.bg-modal').style.display = "flex";
+      }
+    });
+    
+    document.querySelector('.und').addEventListener("click", function() {
+      var r = document.getElementsByTagName("input");
+
+      for (var i = 0; i < r.length; i++) {
+        if (r[i].type == "checkbox" && r[i].checked) {
+          r[i].checked = false;
+        }
+      }
+      document.querySelector('.bg-modal').style.display = "none";
+      nextPrev(1)
+    });
+
+    document.querySelector('.conf').addEventListener("click", function() {
+      var r = document.getElementsByTagName("input");
+      count_report = count_report + 1;
+      var optsel2 = [];
+      var flag = 0;
+      for (var i = 0; i < r.length; i++) {
+        if (r[i].type == "checkbox" && r[i].checked) {
+          flag = 1;
+          optsel2.push(r[i].value);
+          r[i].checked = false;
+        }
+      }
+      if (flag == 1){
+        optsel2.push(',');
+        question.push(movie[currentTab].question);
+        optsel.push(optsel2);
+        document.getElementById("question").value = question;
+        document.getElementById("selectopt").value = optsel;
+        document.getElementById("total_question").value = document.getElementById("total_question").value - 1;
+        document.querySelector('.bg-modal').style.display = "none";
+        nextPrev(1)
+      }
+    });
+    
+    document.getElementById('exitBtn').addEventListener("click", function() {
+      document.querySelector('.bg-modal1').style.display = "flex";
+      clearInterval(counter);
+    });
+
+    document.getElementById('stayBtn').addEventListener("click", function() {
+      document.querySelector('.bg-modal1').style.display = "none";
+      startTimer(timeCount.textContent);
+    });
+
+    function getanswers(){
+      var e = document.getElementsByTagName("input");
+      var count = 0;
+      for(i = currentTab*4 ; i<=((currentTab*4)+3);i++)
+      {
+        if(e[i].type=="radio")
+        {
+          if(e[i].checked)
+          {
+            $(".option").attr("disabled",true);
+            clearInterval(counter);
+            if (e[i].value.toLowerCase()==ans1[currentTab].toLowerCase())
+            {
+              document.querySelector("label#id"+i.toString()).style.border = '2px solid #54e103';
+              document.querySelector("label#id"+i.toString()).style.borderBottom = '4px solid #54e103';
+              document.querySelector("label#id"+i.toString()).style.paddingRight = '40px';
+              document.querySelector("img#id"+i.toString()+'c').style.display = 'block';
+
+              playcorrAudio();
+
+              document.getElementById("nextBtn").style.backgroundColor = '#54e103';
+              document.getElementById("nextBtn").style.color = '#fff';
+              correctcount = correctcount + 1;
+              document.getElementById("score").value = correctcount;
+              if (currentTab == (z.length-1))
+              {
+                document.getElementById("submitBtn").style.display = "none";
+                document.getElementById("homeBtn").style.display = "inline";
+              }
+              else
+              {
+                document.getElementById("submitBtn").style.display = "none";
+                document.getElementById("nextBtn").style.display = "inline";
+              }
+            }
+            else
+            {
+              for (j = currentTab*4 ; j<=(currentTab*4)+3;j++)
+              {
+                if ((e[j].value.toLowerCase())==ans1[currentTab].toLowerCase()){
+                  document.querySelector("label#id"+j.toString()).style.border = '2px solid #54e103';
+                  document.querySelector("label#id"+j.toString()).style.borderBottom = '4px solid #54e103';
+                  document.querySelector("label#id"+j.toString()).style.paddingRight = '40px';
+                  document.querySelector("img#id"+j.toString()+'c').style.display = 'block';
+
+                }
+              }
+              if (e[i].value.toLowerCase()!=ans1[currentTab].toLowerCase())
+              {
+                document.querySelector("label#id"+i.toString()).style.border = '2px solid #ec2626';
+                document.querySelector("label#id"+i.toString()).style.borderBottom = '4px solid #ec2626';
+                document.querySelector("label#id"+i.toString()).style.paddingRight = '40px';
+                document.querySelector("img#id"+i.toString()+'w').style.display = 'block';
+
+                playwronAudio();
+
+                document.getElementById("nextBtn").style.backgroundColor = '#ec2626';
+                document.getElementById("nextBtn").style.color = '#fff';
+                if (currentTab == (z.length-1))
+                {
+                  document.getElementById("submitBtn").style.display = "none";
+                  document.getElementById("homeBtn").style.display = "inline";
+                }
+                else
+                {
+                  document.getElementById("submitBtn").style.display = "none";
+                  document.getElementById("nextBtn").style.display = "inline";
+                }
+              }
+            }
+            break;
+          }
+          else if (i == ((currentTab*4)+3)) {
+            if (timeCount.textContent == '00') {
+              timeCount.textContent = 20;
+              nextPrev(1)
+            }
+          }
+        }
+      }
+        
+    }
+  </script>
+  <script src="{% static "js/quiz.js" %}"></script>
+  <script type="text/javascript">
+    var vglnk = {key: '3e5a7f01a6fed264c99a98a70497ae2d'};
+    (function(d, t) {
+        var s = d.createElement(t);
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = '//cdn.viglink.com/api/vglnk.js';
+        var r = d.getElementsByTagName(t)[0];
+            r.parentNode.insertBefore(s, r);
+    }(document, 'script'));
+  </script>
+
+</body>
+</html>

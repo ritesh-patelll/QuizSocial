@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load embed_video_tags %}
+{% load video_tags %}
+
+{% load socialaccount %}
+
+{% block head %}
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Dum Dum Social: TV Series Quiz | Movie Quiz | Anime Quiz</title>
+
+  <meta property="og:title" content="Dum Dum Social: Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+  <meta property="og:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:locale" content="en">
+  <meta property="og:site_name" content="Dum Dum Social">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@quiz_social">
+  <meta name="twitter:title" content="Dum Dum Social: Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="twitter:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+  <meta name="description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="keywords" content="Movie Quiz, TV Show Quiz, Movie Trivia, TV Show Trivia, Film Quiz, Cinema Quiz, Web series quiz, Web series trivia, Popular movie quiz, Popular web series quiz, Trending movie quiz, Popular tv show quiz, Bollywood movie quiz, Hollywood movie quiz, Bollywood movie trivia, Hollywood movie trivia, India web series quiz, Indian movie quiz, Horror movie quiz, Disney movie quiz, Anime quiz, Harry Potter quiz, Harry Potter house quiz, Romantic movie quiz, Action movie quiz, Sci-fi movie quiz, Action movie quiz, Adventure movie quiz, Animation movie quiz, Biography movie quiz, Comedy movie quiz, Crime movie quiz, Documentary movie quiz, Drama movie quiz, Family movie quiz, Fantasy movie quiz, Film Noir movie quiz, History movie quiz, Horror movie quiz, Music movie quiz, Musical movie quiz, Mystery movie quiz, Romance movie quiz, Sci-Fi movie quiz, Short Film movie quiz, Sport movie quiz, Superhero movie quiz, Thriller movie quiz, War movie quiz, Western movie quiz">
+  <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+  <link rel="home" href="https://dumdumsocial.com/"/>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+  <link href="{% static 'css/index.css' %}" rel="stylesheet">
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+      font-display: swap;
+    }
+  </style>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var youtubeLinks = document.querySelectorAll(".youtube-thumbnail");
+    
+        youtubeLinks.forEach(function(thumbnail) {
+            thumbnail.addEventListener("click", function(event) {
+                event.preventDefault();
+                var videoURL = this.dataset.videoUrl;
+                
+                var embedURL = videoURL.replace("watch?v=", "embed/");
+    
+                var iframe = document.createElement("iframe");
+                iframe.src = embedURL;
+                iframe.width = "560";
+                iframe.height = "315";
+                iframe.allowFullscreen = true;
+                this.parentNode.replaceChild(iframe, this);
+            });
+        });
+    });
+  </script>
+  
+{% endblock head %}
+
+{% block body %}
+<div style=" position: relative; background-color: rgb(255 255 255); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; ">
+    <h2>🤩 Act out & 🥳 guess characters from hit 📺 shows and movies! 🌟</h2>
+    <br>
+    <div class="youtube-thumbnail" data-video-url="{{ videos.video }}" style="background-image: url('{% video_thumbnail_url videos.video %}');">
+    <img style="filter: invert(17%) sepia(96%) saturate(7242%) hue-rotate(0deg) brightness(100%) contrast(114%);width: 40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/youtube.svg">
+    </div>
+    <br>
+    <div class="steps_signin">
+    <h2>To play with ✅verified players, complete these:</h2>
+    1️⃣ Sign in with your Google account 📧
+    <br>
+    2️⃣ Add five movies or 📺 tv shows
+    <br>
+    3️⃣ Confirm your identity with a selfie 🤳
+    <br>
+    4️⃣ Pick two days 📅 that work best for you 
+    <br>
+    5️⃣ Choose your preferred time slots ⌚️
+    </div>
+    <br>
+    <div class="social-login" style="background: #4285F4;">
+    <a href="{% provider_login_url 'google' %}" class="social-btn">
+        <img class="icon" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/btn_gmail.svg' %}">
+        &nbsp;&nbsp;&nbsp;Sign in with Google &nbsp;&nbsp;&nbsp;
+    </a>
+    </div>
+    <br>
+    <div class="redirect">
+    <div class="tap">
+        By clicking "Sign in with Google" I agree
+        <br>
+        to Dum Dum Social's<a href="/termsofuse" class="link" style="text-decoration: none;">&nbsp;TOS</a> and<a href="/privacypolicy" class="link" style="text-decoration: none;">&nbsp;Privacy Policy.</a>
+    </div>
+    </div>
+</div>
+
+{% endblock body %}

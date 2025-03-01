@@ -1,0 +1,1015 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% load embed_video_tags %}
+{% load getting_dict_value %}
+{% load getting_list_dict_value %}
+{% load getting_value_in_list_dict %}
+{% load should_display_message %}
+{% load video_tags %}
+
+{% load socialaccount %}
+
+{% block head %}
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Dum Dum Social: TV Series Quiz | Movie Quiz | Anime Quiz</title>
+
+  <meta property="og:title" content="Dum Dum Social: Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+  <meta property="og:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:locale" content="en">
+  <meta property="og:site_name" content="Dum Dum Social">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@quiz_social">
+  <meta name="twitter:title" content="Dum Dum Social: Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="twitter:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+  <meta name="description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="keywords" content="Movie Quiz, TV Show Quiz, Movie Trivia, TV Show Trivia, Film Quiz, Cinema Quiz, Web series quiz, Web series trivia, Popular movie quiz, Popular web series quiz, Trending movie quiz, Popular tv show quiz, Bollywood movie quiz, Hollywood movie quiz, Bollywood movie trivia, Hollywood movie trivia, India web series quiz, Indian movie quiz, Horror movie quiz, Disney movie quiz, Anime quiz, Harry Potter quiz, Harry Potter house quiz, Romantic movie quiz, Action movie quiz, Sci-fi movie quiz, Action movie quiz, Adventure movie quiz, Animation movie quiz, Biography movie quiz, Comedy movie quiz, Crime movie quiz, Documentary movie quiz, Drama movie quiz, Family movie quiz, Fantasy movie quiz, Film Noir movie quiz, History movie quiz, Horror movie quiz, Music movie quiz, Musical movie quiz, Mystery movie quiz, Romance movie quiz, Sci-Fi movie quiz, Short Film movie quiz, Sport movie quiz, Superhero movie quiz, Thriller movie quiz, War movie quiz, Western movie quiz">
+  <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+  <link rel="home" href="https://dumdumsocial.com/"/>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+  {% include 'structured_data.html' %}
+
+  <link href="{% static 'css/index.css' %}" rel="stylesheet">
+  <script src="{% static "js/copy.js" %}"></script>
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+      font-display: swap;
+    }
+  </style>
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var youtubeLinks = document.querySelectorAll(".youtube-thumbnail");
+    
+        youtubeLinks.forEach(function(thumbnail) {
+            thumbnail.addEventListener("click", function(event) {
+                event.preventDefault();
+                var videoURL = this.dataset.videoUrl;
+                
+                var embedURL = videoURL.replace("watch?v=", "embed/");
+    
+                var iframe = document.createElement("iframe");
+                iframe.src = embedURL;
+                iframe.width = "560";
+                iframe.height = "315";
+                iframe.allowFullscreen = true;
+                this.parentNode.replaceChild(iframe, this);
+            });
+        });
+    });
+
+    function imgError(image, poster_id, type, page_type, heading1, content1) {
+      let imgUrl; // Declare imgUrl variable here
+
+      if (type === 'movies') {
+        imgUrl = `https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/posters/movies/${poster_id}.jpg`;
+      } else if (type === 'series') {
+        imgUrl = `https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/posters/series/${poster_id}.jpg`;
+      }
+      
+      // Create a temporary Image object
+      const tempImage = new Image();
+      tempImage.src = imgUrl;
+      
+      // Check if the image loads successfully
+      tempImage.onload = () => {
+        image.src = imgUrl;
+      };
+      
+      // If the image fails to load, remove the parent card element
+      tempImage.onerror = () => {
+        if (page_type == 'default') {
+          const parentOwlItem = image.closest('.card');
+          if (parentOwlItem) {
+            parentOwlItem.remove();
+          }
+        } else if (page_type == 'search') {
+          const parentCard = image.closest('.card');
+          if (parentCard) {
+            // Remove item class and rename card class to noimg_card
+            parentCard.classList.remove('item');
+            parentCard.classList.add('noimg_card');
+
+            // Remove img tag
+            image.remove();
+            if (type == 'series') {
+              parentCard.querySelector('.strip').remove();
+            }
+
+            // Rename content class to noimg_content
+            const contentDiv = parentCard.querySelector('.content');
+            contentDiv.classList.remove('content');
+            contentDiv.classList.add('noimg_content');
+
+
+            const title = document.createElement('h3');
+            title.textContent = heading1;
+
+            const releaseYear = document.createElement('p');
+            releaseYear.textContent = content1;
+
+            const firstChild = contentDiv.firstChild;
+            contentDiv.insertBefore(title, firstChild);
+            contentDiv.insertBefore(releaseYear, title.nextSibling);
+          }
+        }
+      };
+    }
+  </script>
+  <meta name="google-site-verification" content="IMpGunnR_oB9TKhxQKd0mzLHNKKbM734ZGLNymZsa7A" />
+  
+{% endblock head %}
+
+{% block body %}
+<div style=" position: relative; background-color: rgb(255 255 255); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; ">
+
+  {% if user.is_authenticated %}
+    {% if fav_list|length < 5 or not fav_days or not fav_time or not selfie_verification or not timezoneutc %}
+      <h2>
+        🌟 Follow these steps for a 🔒safe and 🥳 thrilling game:
+      </h2>
+      <br>
+      {% if fav_list|length < 5 %}
+        <h2>
+          Step 1/4: 🔎👆Search & add 5 movies or series to favorites by clicking the + button.
+        </h2>
+
+        {% else %}
+          {% if not selfie_verification %}
+            <h2>
+              Step 2/4: Verifiy your identity by clicking on the continue button.
+            </h2>
+            {% else %}
+              {% if not fav_days %}
+                <h2>
+                  Step 3/4: Selete days on which you are available to play.
+                </h2>
+                {% else %}
+                  {% if not fav_time or not timezoneutc %}
+                    <h2>
+                      Step 4/4: Selete your timezone and time slots on which you are available to play.
+                    </h2>
+                  {% endif %}
+              {% endif %}
+          {% endif %}
+          <br>
+          <br>
+          <a class="favBtn" href='/events'>Continue</a>
+      {% endif %}
+    {% else %}
+      <h1 class="text">
+        🎉Congrats! You're now being matched with ✅verified players.
+        <br>
+        1. 📲Ensure Google Calendar is installed on your primary device.
+        <br>
+        2. 🔔Enable calendar notifications to avoid missing events.
+        <br>
+        3. 💯Bring your A-game for high rankings 🏆 & always come prepared! 📚
+        <br>
+        4. 🗓️If you can't attend, please inform us as early as possible.🙏
+        <br>
+        5. ⚠️Missing events twice 😔, leaving midway 🏃‍♂️, or bad behavior 😠 will get you blocked 🚫.
+        <br>
+      </h1>
+    {% endif %}
+    {% else %}
+      <h2>🤩 Act out & 🥳 guess characters from hit 📺 shows and movies! 🌟</h2>
+      <br>
+      <div class="youtube-thumbnail" data-video-url="{{ videos.video }}" style="background-image: url('{% video_thumbnail_url videos.video %}');">
+        <img style="filter: invert(17%) sepia(96%) saturate(7242%) hue-rotate(0deg) brightness(100%) contrast(114%);width: 40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/youtube.svg">
+      </div>
+      <br>
+      <div class="steps_signin">
+        <h2>To play with ✅verified players, complete these:</h2>
+        1️⃣ Sign in with your Google account 📧
+        <br>
+        2️⃣ Add five movies or 📺 tv shows
+        <br>
+        3️⃣ Confirm your identity with a selfie 🤳
+        <br>
+        4️⃣ Pick two days 📅 that work best for you 
+        <br>
+        5️⃣ Choose your preferred time slots ⌚️
+      </div>
+      <br>
+      <div class="social-login" style="background: #4285F4;">
+        <a href="{% provider_login_url 'google' %}" class="social-btn">
+          <img class="icon" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/btn_gmail.svg' %}">
+          &nbsp;&nbsp;&nbsp;Sign in with Google &nbsp;&nbsp;&nbsp;
+        </a>
+      </div>
+      <br>
+      <div class="redirect">
+        <div class="tap">
+          By clicking "Sign in with Google" I agree
+          <br>
+          to Dum Dum Social's<a href="/termsofuse" class="link" style="text-decoration: none;">&nbsp;TOS</a> and<a href="/privacypolicy" class="link" style="text-decoration: none;">&nbsp;Privacy Policy.</a>
+        </div>
+      </div>
+  {% endif %}
+    
+</div>
+{% if top_movie_list %}
+  <div class="container">
+    {% if user.is_authenticated %}
+      <div style="display: none;" id="fav_hoverclass" class="hoverclass">
+        <div class="headerclass">
+          <h1>My Favorites</h1>
+        </div>
+        <div class="scrolling-container" id="scrolling-container-1">
+          <button class="scroll-button left" data-target="scrolling-container-1">&#10094;</button>
+          <div class="allcard" id="allcard">
+            {% for fav in fav_list %}
+              {% if fav.type == 'series' %}
+                <div class="card">
+                  <div class="strip">{{ fav.season }}</div>
+                  {{fav.content_object}}
+                  <img style="width:100%;" id="img_{{fav.wiki_id|add:'_'|add:fav.season}}" src="" onerror='imgError(this, "{{fav.poster_id}}", "series", "search", "{{fav.title}}", "{{fav.season}}");'>
+                  <img class="fav_icon" onclick='fav_remove(this, "{{ fav.wiki_id }}", "{{ fav.id }}", "series")' style="width:40px;" style="width:100%;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                  <div id="{{fav.id}}" class="content">
+                    {% if fav.id in available_series_character_image %}
+                      <a onClick="joinevent('series', '{{fav.id}}')" class="button">Join Event</a>
+                    {% endif %}
+                    {% if fav.id in takenquiz %}
+                      {% if takenquiz|getting_dict_value:fav.id|getting_value_in_list_dict:'series' %}
+                        <a id="{{ takenquiz|getting_dict_value:fav.id|getting_list_dict_value:'series' }}" class="button" onClick="showresult(this.id, 'series', '{{fav.title}}', '{{fav.season}}')">Show Result</a>
+                      {% else %}
+                        {% if fav.wiki_id in available_series_quiz %}
+                          <a class="button" onClick="takequiz('series', '{{fav.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{fav.id}}, 'series')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    {% else %}
+                      {% if fav.wiki_id in available_series_quiz %}
+                        <a class="button" onClick="takequiz('series', '{{fav.id}}')">Start Quiz</a>
+                      {% else %}
+                        <a class="button" onClick="makearequest({{fav.id}}, 'series')">Request Quiz</a>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+              {% if fav.type == 'movies' %}
+                <div class="card">
+                  <img style="width:100%;" id="img_{{fav.wiki_id}}" src="" onerror='imgError(this, "{{fav.poster_id}}", "movies", "search", "{{fav.title}}", "{{fav.release_year}}");'>
+                  <img class="fav_icon" onclick='fav_remove(this, "{{ fav.wiki_id }}", "{{ fav.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                  <div id="{{fav.id}}" class="content">
+                    {% if fav.id in available_movie_character_image %}
+                      <a onClick="joinevent('movie', '{{fav.id}}')" class="button">Join Event</a>
+                    {% endif %}
+                    {% if fav.id in takenquiz %}
+                      {% if takenquiz|getting_dict_value:fav.id|getting_value_in_list_dict:'movie' %}
+                        <a id="{{ takenquiz|getting_dict_value:fav.id|getting_list_dict_value:'movie' }}" class="button" onClick="showresult(this.id, 'movie', '{{fav.title}}', '{{fav.release_year}}')">Show Result</a>
+                      {% else %}
+                        {% if fav.wiki_id in available_movie_quiz %}
+                          <a class="button" onClick="takequiz('movie', '{{fav.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{fav.id}}, 'movie')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    {% else %}
+                      {% if fav.wiki_id in available_movie_quiz %}
+                        <a class="button" onClick="takequiz('movie', '{{fav.id}}')">Start Quiz</a>
+                      {% else %}
+                        <a class="button" onClick="makearequest({{fav.id}}, 'movie')">Request Quiz</a>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
+            {% endfor %}
+          </div>
+          <button class="scroll-button right" data-target="scrolling-container-1">&#10095;</button>
+        </div>
+      </div>
+      <br>
+      <br>
+    {% endif %}
+    <div id="hoverclass" class="hoverclass">
+      <div class="headerclass">
+        <h1>Series</h1>
+      </div>
+      <div class="scrolling-container" id="scrolling-container-2">
+        <button class="scroll-button left" data-target="scrolling-container-2">&#10094;</button>
+        <div class="allcard" id="allcard">
+          {% for serie in series %}
+            {% if serie.imdb_id in top_series_list %}
+              {% if serie.wiki_id in available_series_quiz %}
+                {% if serie.season == 'Season 1' %}
+                  <div class="card">
+                    <div class="strip">{{ serie.season }}</div>
+                    <img style="width:100%;" id="img_{{serie.poster_id}}" src="" onerror='imgError(this, "{{serie.poster_id}}", "series", "default", "{{serie.title}}", "{{serie.season}}");'>
+                    {% if user.is_authenticated %}
+                      {% if serie.wiki_id in fav_series_list %}
+                        <img class="fav_icon" onclick='fav_remove(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                        {% else %}
+                          <img class="fav_icon" onclick='fav_add(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+                      {% endif %}
+                    {% endif %}
+                    <div id="{{serie.id}}" class="content">
+                      {% if serie.id in available_series_character_image %}
+                        <a onClick="joinevent('series', '{{serie.id}}')" class="button">Join Event</a>
+                      {% endif %}
+                      {% if serie.id in takenquiz %}
+                        {% if takenquiz|getting_dict_value:serie.id|getting_value_in_list_dict:'series' %}
+                          <a id="{{ takenquiz|getting_dict_value:serie.id|getting_list_dict_value:'series' }}" class="button" onClick="showresult(this.id, 'series', '{{serie.title}}', '{{serie.season}}')">Show Result</a>
+                        {% else %}
+                          {% if serie.wiki_id in available_series_quiz %}
+                            <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+                          {% else %}
+                            <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+                          {% endif %}
+                        {% endif %}
+                      {% else %}
+                        {% if serie.wiki_id in available_series_quiz %}
+                          <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+
+              {% endif %}
+            {% endif %}
+
+          {% endfor %}
+        </div>
+        <button class="scroll-button right" data-target="scrolling-container-2">&#10095;</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div id="hoverclass" class="hoverclass">
+      <div class="headerclass">
+        <h1>Movies</h1>
+      </div>
+      <div class="scrolling-container" id="scrolling-container-3">
+        <button class="scroll-button left" data-target="scrolling-container-3">&#10094;</button>
+        <div class="allcard" id="allcard">
+          {% for movie in movies %}
+            {% if movie.imdb_id in top_movie_list %}
+              {% if movie.wiki_id in available_movie_quiz %}
+                <div class="card">
+                  <img style="width:100%;" id="img_{{movie.poster_id}}" src="" onerror='imgError(this, "{{movie.poster_id}}", "movies", "default", "{{movie.title}}", "{{movie.release_year}}");'>
+                  {% if user.is_authenticated %}
+                    {% if movie.wiki_id in fav_movies_list %}
+                      <img class="fav_icon" onclick='fav_remove(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                      {% else %}
+                        <img class="fav_icon" onclick='fav_add(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+                    {% endif %}
+                  {% endif %}
+                  <div id="{{movie.id}}" class="content">
+                    {% if movie.id in available_movie_character_image %}
+                      <a onClick="joinevent('movie', '{{movie.id}}')" class="button">Join Event</a>
+                    {% endif %}
+                    {% if movie.id in takenquiz %}
+                      {% if takenquiz|getting_dict_value:movie.id|getting_value_in_list_dict:'movie' %}
+                        <a id="{{ takenquiz|getting_dict_value:movie.id|getting_list_dict_value:'movie' }}" class="button" onClick="showresult(this.id, 'movie', '{{movie.title}}', '{{movie.release_year}}')">Show Result</a>
+                      {% else %}
+                        {% if movie.wiki_id in available_movie_quiz %}
+                          <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    {% else %}
+                      {% if movie.wiki_id in available_movie_quiz %}
+                        <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+                      {% else %}
+                        <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <button class="scroll-button right" data-target="scrolling-container-3">&#10095;</button>
+      </div>
+    </div>
+    {% comment %} <br>
+    <br>
+    <div id="hoverclass" class="hoverclass">
+      <div class="headerclass">
+        <h1>Series Popular on Imdb</h1>
+      </div>
+      <div class="scrolling-container" id="scrolling-container-4">
+        <button class="scroll-button left" data-target="scrolling-container-4">&#10094;</button>
+        <div class="allcard" id="allcard">
+          {% for serie in series %}
+            {% if serie.imdb_id in top_imdb_series_list %}
+              {% if serie.wiki_id in available_series_quiz %}
+                {% if serie.season == 'Season 1' %}
+                  <div class="card">
+                    <div class="strip">{{ serie.season }}</div>
+                    <img style="width:100%;" id="img_{{serie.poster_id}}" src="" onerror='imgError(this, "{{serie.poster_id}}", "series", "default", "{{serie.title}}", "{{serie.season}}");'>
+                    {% if user.is_authenticated %}
+                      {% if serie.wiki_id in fav_series_list %}
+                        <img class="fav_icon" onclick='fav_remove(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                        {% else %}
+                          <img class="fav_icon" onclick='fav_add(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+                      {% endif %}
+                    {% endif %}
+                    <div id="{{serie.id}}" class="content">
+                      {% if serie.id in available_series_character_image %}
+                        <a onClick="joinevent('series', '{{serie.id}}')" class="button">Join Event</a>
+                      {% endif %}
+                      {% if serie.id in takenquiz %}
+                        {% if takenquiz|getting_dict_value:serie.id|getting_value_in_list_dict:'series' %}
+                          <a id="{{ takenquiz|getting_dict_value:serie.id|getting_list_dict_value:'series' }}" class="button" onClick="showresult(this.id, 'series', '{{serie.title}}', '{{serie.season}}')">Show Result</a>
+                        {% else %}
+                          {% if serie.wiki_id in available_series_quiz %}
+                            <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+                          {% else %}
+                            <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+                          {% endif %}
+                        {% endif %}
+                      {% else %}
+                        {% if serie.wiki_id in available_series_quiz %}
+                          <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endif %}
+
+            {% endif %}
+
+          {% endfor %}
+        </div>
+        <button class="scroll-button right" data-target="scrolling-container-4">&#10095;</button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div id="hoverclass" class="hoverclass">
+      <div class="headerclass">
+        <h1>Movies Popular on Imdb</h1>
+      </div>
+      <div class="scrolling-container" id="scrolling-container-5">
+        <button class="scroll-button left" data-target="scrolling-container-5">&#10094;</button>
+        <div class="allcard" id="allcard">
+          {% for movie in movies %}
+            {% if movie.imdb_id in top_imdb_movie_list %}
+              {% if movie.wiki_id in available_movie_quiz %}
+                <div class="card">
+                  <img style="width:100%;" id="img_{{movie.poster_id}}" src="" onerror='imgError(this, "{{movie.poster_id}}", "movies", "default", "{{movie.title}}", "{{movie.release_year}}");'>
+                  {% if user.is_authenticated %}
+                    {% if movie.wiki_id in fav_movies_list %}
+                      <img class="fav_icon" onclick='fav_remove(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+                      {% else %}
+                        <img class="fav_icon" onclick='fav_add(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+                    {% endif %}
+                  {% endif %}
+                  <div id="{{movie.id}}" class="content">
+                    {% if movie.id in available_movie_character_image %}
+                      <a onClick="joinevent('movie', '{{movie.id}}')" class="button">Join Event</a>
+                    {% endif %}
+                    {% if movie.id in takenquiz %}
+                      {% if takenquiz|getting_dict_value:movie.id|getting_value_in_list_dict:'movie' %}
+                        <a id="{{ takenquiz|getting_dict_value:movie.id|getting_list_dict_value:'movie' }}" class="button" onClick="showresult(this.id, 'movie', '{{movie.title}}', '{{movie.release_year}}')">Show Result</a>
+                      {% else %}
+                        {% if movie.wiki_id in available_movie_quiz %}
+                          <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+                        {% else %}
+                          <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+                        {% endif %}
+                      {% endif %}
+                    {% else %}
+                      {% if movie.wiki_id in available_movie_quiz %}
+                        <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+                      {% else %}
+                        <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+        <button class="scroll-button right" data-target="scrolling-container-5">&#10095;</button>
+      </div>
+    </div> {% endcomment %}
+  </div>
+{% else %}
+  <div class="container" style="flex-direction: row;flex-wrap: wrap;">
+    {% for movie in movies %}
+      <div class="card">
+        <img style="width:100%;" id="img_{{movie.poster_id}}" src="" onerror='imgError(this, "{{movie.poster_id}}", "movies", "search", "{{movie.title}}", "{{movie.release_year}}");'>
+        {% if user.is_authenticated %}
+          {% if movie.wiki_id in fav_movies_list %}
+            <img class="fav_icon" onclick='fav_remove(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+            {% else %}
+              <img class="fav_icon"  onclick='fav_add(this, "{{ movie.wiki_id }}", "{{ movie.id }}", "movies")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+          {% endif %}
+        {% endif %}
+        <div id="{{movie.id}}" class="content">
+          {% if movie.id in available_movie_character_image %}
+            <a onClick="joinevent('movie', '{{movie.id}}')" class="button">Join Event</a>
+          {% endif %}
+          {% if movie.id in takenquiz %}
+            {% if takenquiz|getting_dict_value:movie.id|getting_value_in_list_dict:'movie' %}
+              <a id="{{ takenquiz|getting_dict_value:movie.id|getting_list_dict_value:'movie' }}" class="button" onClick="showresult(this.id, 'movie', '{{movie.title}}', '{{movie.release_year}}')">Show Result</a>
+            {% else %}
+              {% if movie.wiki_id in available_movie_quiz %}
+                <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+              {% else %}
+                <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            {% if movie.wiki_id in available_movie_quiz %}
+              <a class="button" onClick="takequiz('movie', '{{movie.id}}')">Start Quiz</a>
+            {% else %}
+              <a class="button" onClick="makearequest({{movie.id}}, 'movie')">Request Quiz</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+    
+    {% for serie in series %}
+      <div class="card">
+        <div class="strip">{{ serie.season }}</div>
+        <img style="width:100%;" id="img_{{serie.poster_id}}" src="" onerror='imgError(this, "{{serie.poster_id}}", "series", "search", "{{serie.title}}", "{{serie.season}}");'>
+        {% if user.is_authenticated %}
+          {% if serie.wiki_id in fav_series_list %}
+            <img class="fav_icon" onclick='fav_remove(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg">
+            {% else %}
+              <img class="fav_icon" onclick='fav_add(this, "{{ serie.wiki_id }}", "{{ serie.id }}", "series")' style="width:40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg">
+          {% endif %}
+        {% endif %}
+        <div id="{{serie.id}}" class="content">
+          {% if serie.id in available_series_character_image %}
+            <a onClick="joinevent('series', '{{serie.id}}')" class="button">Join Event</a>
+          {% endif %}
+          {% if serie.id in takenquiz %}
+            {% if takenquiz|getting_dict_value:serie.id|getting_value_in_list_dict:'series' %}
+              <a id="{{ takenquiz|getting_dict_value:serie.id|getting_list_dict_value:'series' }}" class="button" onClick="showresult(this.id, 'series', '{{serie.title}}', '{{serie.season}}')">Show Result</a>
+            {% else %}
+              {% if serie.wiki_id in available_series_quiz %}
+                <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+              {% else %}
+                <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            {% if serie.wiki_id in available_series_quiz %}
+              <a class="button" onClick="takequiz('series', '{{serie.id}}')">Start Quiz</a>
+            {% else %}
+              <a class="button" onClick="makearequest({{serie.id}}, 'series')">Request Quiz</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+<br>
+<br>
+<form class="searchbox1" method="POST" action="/">
+  {% csrf_token %}
+  {% if query %}
+    <input type="search" class="content" id="query" name="query" value="{{query}}" aria-label="Search">
+    {% else %}
+      <input type="search" class="content" id="query" name="query" placeholder="🔍 27,000+ movies & series events" aria-label="Search">
+  {% endif %}
+</form>
+<div class="bg-modal1">
+  <div class="modal-contents1">
+    <a class="exit1" type="button">✖</a>
+    {% static "" as baseUrl %}
+    <img class="quizsocial-img2" src=''>
+
+    <div id='in-chara1' class='in-chara1'>
+      <p>Copied!</p>
+    </div>
+
+    <div id='in-chara2' class='in-chara2'>
+      <p>Copied!</p>
+    </div>
+
+    <div class="btn-group1">
+      <a class='fb'id="{{imgpath}}" onClick=downloadlink(this.id) class = "dow" type="submit">Download</a>
+      <a class='fb' onClick=sharequiz() type="submit">Share Quiz</a>
+      <a class='fb' style="display: none;" id='copyBtn' type="submit">Copy Image</a>
+    </div>
+  </div>
+</div>
+
+<div class="bg-modal2">
+  <div class="modal-contents2">
+    <a class="exit2" type="button">✖</a>
+    <h4>How much time you have?</h4>
+
+    <div class="rnage">
+      <div class="val">
+        <div id="selector">
+          <div id="SelectValue"></div>
+        </div>
+        <div id="selector2">
+          <div id="SelectValue2"></div>
+        </div>
+      </div>
+      <div class="val2">
+        <input type="range" min="10" max="15" value="10" id="slider">
+      </div>
+    </div>
+
+    <div class="coldiv">
+      <div class="quiz">
+        <button onClick=mcq_quiz() class="qui" type="submit" id="quizBtn">Start</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-modal3">
+  <div class="modal-contents3">
+    <div style="display: flex;justify-content: flex-end;">
+      <button onclick="showss()" style="align-content: center;display: flex;align-items: center;text-decoration: underline;border: none;background: white;color: blue;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-paperclip" viewBox="0 0 16 16">
+          <path d="M4.5 3a2.5 2.5 0 0 1 5 0v9a1.5 1.5 0 0 1-3 0V5a.5.5 0 0 1 1 0v7a.5.5 0 0 0 1 0V3a1.5 1.5 0 1 0-3 0v9a2.5 2.5 0 0 0 5 0V5a.5.5 0 0 1 1 0v7a3.5 3.5 0 1 1-7 0V3z"></path>
+        </svg>
+        How To Play
+      </button>
+    </div>
+    <br>
+    <div class="social-login">
+      <button onClick=joineventfri() class="social-btn">
+        Invite Your Friend to Play
+      </button>
+    </div>
+    <div class='or'>or</div>
+    <div class="social-login">
+      <button onClick=joineventran() class="social-btn">
+        Play With An Unverified Stranger
+      </button>
+    </div>
+    <br>
+  </div>
+</div>
+
+<div class="bg-modal4" id="bg-modal4">
+  <div class="modal-contents4" id="modal-contents4">
+    <div class="youtube-thumbnail" data-video-url="{{ videos.video }}" style="background-image: url('{% video_thumbnail_url videos.video %}');">
+      <img style="filter: invert(17%) sepia(96%) saturate(7242%) hue-rotate(0deg) brightness(100%) contrast(114%);width: 40px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/youtube.svg">
+    </div>
+  </div>
+</div>
+
+<div class="bg-modal5" id="bg-modal5">
+  <div class="modal-contents5" id="modal-contents5">
+    <a class="exit5" type="button">✖</a>
+    <div style="position: relative;display: flex;width: 100%;align-content: flex-start;flex-wrap: wrap;align-items: flex-start;justify-content: center;height: 100%;">
+      <div style="width: 100%;display: flex;flex-wrap: wrap;overflow-y: scroll;overflow-x: hidden;align-content: flex-start;align-items: flex-start;height: 100%;justify-content: flex-start;">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+  var id2 = "";
+  var type_ = "";
+  var type_title = "";
+  var type_other = "";
+  var id1 = "";
+  var type_id = 0;
+  var videos = "{{ videos|safe }}";
+  var fav_movies_list = {{ fav_movies_list|safe }};
+  var fav_series_list = {{ fav_series_list|safe }};
+
+  var slider = document.getElementById("slider");
+  var SelectValue = document.getElementById("SelectValue");
+
+  SelectValue.innerHTML = parseInt((slider.value*20)/60) + " mins";
+  SelectValue2.innerHTML = slider.value + " ques";
+  var noq = slider.value
+
+  slider.oninput = function() {
+    SelectValue.innerHTML = parseInt((this.value*20)/60) + " mins";
+    SelectValue2.innerHTML = this.value + " ques";
+    noq = slider.value = this.value;
+  }
+
+  function takequiz(type, t_i) {
+    type_ = type;
+    type_id = t_i;
+    document.querySelector('.bg-modal2').style.display = "flex";
+  }
+
+  function joinevent(type, id) {
+    type_ = type;
+    id1 = id;
+    document.querySelector('.bg-modal3').style.display = "flex";
+  }
+
+  function showss() {
+    document.querySelector('.bg-modal4').style.display = "flex";
+  }
+
+  function joineventran() {
+    window.location.href = '/waitingroom/' + type_ + '/' + id1 + '/public';
+  }
+
+  function joineventfri() {
+    window.location.href = '/waitingroom/' + type_ + '/' + id1 + '/private';
+  }
+
+  function makearequest(clicked, type) {
+    window.location.href = "/requestquiz/" + clicked + "/" + type;
+  }
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents5");
+    if (!container.is(e.target) && container.has(e.target).length === 0 && document.querySelector('.bg-modal1').style.display == "none" && document.querySelector('.bg-modal2').style.display == "none" && document.querySelector('.bg-modal3').style.display == "none"){
+      $('body').css('overflow', 'scroll');
+      document.querySelector('.bg-modal5').style.display = "none";
+    }
+  });
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents1");
+    if (!container.is(e.target) && container.has(e.target).length === 0){
+      document.querySelector('.bg-modal1').style.display = "none";
+    }
+  });
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents2");
+    if (!container.is(e.target) && container.has(e.target).length === 0){
+      document.querySelector('.bg-modal2').style.display = "none";
+    }
+  });
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents3");
+    if (!container.is(e.target) && container.has(e.target).length === 0 && document.querySelector('.bg-modal4').style.display == "none"){
+      document.querySelector('.bg-modal3').style.display = "none";
+    }
+  });
+
+  $(document).mouseup(function(e){
+    var container = $(".modal-contents4");
+    if (!container.is(e.target) && container.has(e.target).length === 0){
+      document.querySelector('.bg-modal4').style.display = "none";
+    }
+  });
+
+  function showresult(clicked, t, t_t, t_o) {
+    id2 = clicked;
+    type_ = t;
+    type_title = t_t;
+    type_other = t_o;
+    if (id2){
+      document.querySelector('.bg-modal1').style.display = "flex";
+      document.querySelector('.quizsocial-img2').src = 'https://quiz-social-static-and-media-files.s3.amazonaws.com{{ baseUrl }}img/usercard/' + id2;
+    }
+    else{
+      window.location.href = "/errorresult";
+    }
+
+  }
+  function mcq_quiz() {
+    window.location.href = '/' + type_ + '/' + type_id + '/' + 'mcq' + '/' + noq;
+  }
+
+  document.querySelector('.exit1').addEventListener("click", function() {
+    document.querySelector('.bg-modal1').style.display = "none";
+  });
+
+  document.querySelector('.exit2').addEventListener("click", function() {
+    document.querySelector('.bg-modal2').style.display = "none";
+  });
+
+  document.querySelector('.exit5').addEventListener("click", function() {
+    $('body').css('overflow', 'scroll');
+    document.querySelector('.bg-modal5').style.display = "none";
+  });
+
+  function downloadlink() {
+    window.location.href = '/download' + '/' + id2;
+  }
+
+  function sharequiz() {
+    navigator.clipboard.writeText('https://dumdumsocial.com/' + type_ + '/' + type_title + '/' + type_other);
+    document.getElementById('in-chara1').style.display = "flex";
+      setTimeout(() => {  document.getElementById('in-chara1').style.display = "none"; }, 1000);
+  }
+
+  if ((fav_movies_list.length + fav_series_list.length) > 0) {
+    document.getElementById('fav_hoverclass').style.display = 'flex';
+  }
+
+  async function fav_asyncfun(task, vari) {
+    if (task == 'fav_add') {
+      let response = await fetch(`/fav/fav_add/?id=${vari[0]}&type_=${vari[1]}`)
+      let data = await response.json()
+      if (vari[1] == 'movies') {
+        fav_movies_list.push(vari[0])
+      } else if (vari[1] == 'series') {
+        fav_series_list.push(vari[0])
+      }
+      if ((fav_movies_list.length + fav_series_list.length) > 0) {
+        document.getElementById('fav_hoverclass').style.display = 'flex';
+      }
+      if ((fav_movies_list.length + fav_series_list.length) >= 5) {
+        location.reload();
+      }
+    }
+    else if (task == 'fav_remove') {
+      let response = await fetch(`/fav/fav_remove/?id=${vari[0]}&type_=${vari[1]}`)
+      let data = await response.json()
+      if (vari[1] == 'movies') {
+        fav_movies_list = fav_movies_list.filter(item => item !== vari[0])
+      } else if (vari[1] == 'series') {
+        fav_series_list = fav_series_list.filter(item => item !== vari[0])
+      }
+      if ((fav_movies_list.length + fav_series_list.length - 1) < 1) {
+        document.getElementById('fav_hoverclass').style.display = 'none';
+      }
+      if ((fav_movies_list.length + fav_series_list.length - 1) == 4) {
+        location.reload();
+      }
+    }
+    return 'done'
+  }
+
+  function change_fav_img(card, wiki_id, id, type_) {
+    if (card.src == 'https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg') {
+      var img = 'https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg';
+      var onclickfun = 'fav_remove(this, "' + wiki_id + '", "' + id + '", "' + type_ + '")'
+    } else if ( card.src == 'https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/tick_circle.svg' ) {
+      var img = 'https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/add_circle.svg';
+      var onclickfun = 'fav_add(this, "' + wiki_id + '", "' + id + '", "' + type_ + '")'
+    }
+    const parentCard = card.parentNode;
+    if (parentCard) {
+      var elements = $("[id='" + id + "']");
+      // Loop through the elements
+      for (var i = 0; i < elements.length; i++) {
+        var loop_parentCard = $(elements[i].parentNode);
+  
+        loopchildele = loop_parentCard.find(".fav_icon")[0]
+        loopchildele.remove();
+  
+        const title = document.createElement('img');
+        title.setAttribute('class', 'fav_icon');
+        title.setAttribute('style', 'width:40px;');
+        title.setAttribute('src', img);
+        title.setAttribute('onclick', onclickfun);
+  
+        // Insert the new title element before the first child of the loop_parentCard
+        loop_parentCard[0].insertBefore(title, loop_parentCard[0].firstChild);
+      }
+    }
+  }
+
+  function getMyFavoritesAllcard() {
+    const myFavoritesHeader = Array.from(document.querySelectorAll("h1")).find(
+      (header) => header.textContent === "My Favorites"
+    );
+    return myFavoritesHeader.closest(".hoverclass").querySelector(".allcard");
+  }
+
+  function updateMyFavorites(action, cardData) {
+    const myFavoritesAllcard = getMyFavoritesAllcard();
+  
+    if (action === "add") {
+      const clonedCardData = cardData.cloneNode(true);
+      myFavoritesAllcard.appendChild(clonedCardData);
+    } else if (action === "remove") {
+      console.log(cardData)
+      const element = myFavoritesAllcard.querySelector(`[id="${cardData.id}"]`);
+      const cardToRemove = element.closest('.card');
+      myFavoritesAllcard.removeChild(cardToRemove);
+    }
+  }
+  
+  function fav_add(card, wiki_id, id, type_) {
+    if ((fav_movies_list.length + fav_series_list.length) >= 5) {
+      swal({
+        text: "You can't add more than 5.",
+        dangerMode: true,
+      });
+      return;
+    }
+  
+    const activeCardData = card.closest(".card");
+    
+    fav_asyncfun("fav_add", [id, type_]).then((response) => {
+      if (response === "done") {
+        try {
+          updateMyFavorites("add", activeCardData);
+        }
+        catch(err) { 
+        }
+      }
+    });
+  
+    change_fav_img(card, wiki_id, id, type_);
+  }
+  
+  function fav_remove(card, wiki_id, id, type_) {
+    fav_asyncfun("fav_remove", [id, type_]).then((response) => {
+      if (response === "done") {
+        try {
+          updateMyFavorites("remove", {
+            id: id,
+            type_: type_,
+          });
+        }
+        catch(err) {
+        }
+      }
+    });
+    change_fav_img(card, wiki_id, id, type_);
+  }
+
+  function scrollCardsLeft(targetId) {
+    const target = document.getElementById(targetId);
+    const allCard = target.querySelector(".allcard");
+    allCard.scrollBy({ left: -300, behavior: "smooth" });
+  }
+
+  function scrollCardsRight(targetId) {
+    const target = document.getElementById(targetId);
+    const allCard = target.querySelector(".allcard");
+    allCard.scrollBy({ left: 300, behavior: "smooth" });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const allCards = document.querySelectorAll(".allcard");
+
+    allCards.forEach((allCard) => {
+      allCard.addEventListener("mousedown", mouseDownHandler);
+      allCard.addEventListener("mousemove", mouseMoveHandler);
+      allCard.addEventListener("mouseup", mouseUpHandler);
+      allCard.addEventListener("mouseleave", mouseUpHandler);
+    });
+
+    const leftButtons = document.querySelectorAll(".scroll-button.left");
+    leftButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        scrollCardsLeft(this.dataset.target);
+      });
+    });
+
+    const rightButtons = document.querySelectorAll(".scroll-button.right");
+    rightButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        scrollCardsRight(this.dataset.target);
+      });
+    });
+  });
+
+  let isMouseDown = false;
+  let startX;
+
+  function mouseDownHandler(e) {
+    isMouseDown = true;
+    startX = e.clientX;
+  }
+
+  function mouseMoveHandler(e) {
+    if (!isMouseDown) return;
+    e.preventDefault();
+    const dx = startX - e.clientX;
+    startX = e.clientX;
+    e.currentTarget.scrollLeft += dx;
+  }
+
+  function mouseUpHandler() {
+    isMouseDown = false;
+  }
+
+  // fav_asyncfun('search', [document.getElementById("favque").value, vari[2]])
+  
+</script>
+{% endblock body %}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="utf-8">
+    {% load static %}
+    {% load socialaccount %}
+    {% load i18n %}
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <title>Dum Dum Social: Signin</title>
+
+    <meta property="og:title" content="Dum Dum Social: Signin" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+    <meta property="og:description" content="Character Dumb Charades for Movie and TV Show Fans">
+    <meta property="og:locale" content="en">
+    <meta property="og:site_name" content="Dum Dum Social">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@quiz_social">
+    <meta name="twitter:title" content="Dum Dum Social: Signin">
+    <meta name="twitter:description" content="Character Dumb Charades for Movie and TV Show Fans">
+    <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+    <meta name="description" content="Character Dumb Charades for Movie and TV Show Fans">
+    <meta name="keywords" content="Movie Quiz, TV Show Quiz, Movie Trivia, TV Show Trivia, Film Quiz, Cinema Quiz, Web series quiz, Web series trivia, Popular movie quiz, Popular web series quiz, Trending movie quiz, Popular tv show quiz, Bollywood movie quiz, Hollywood movie quiz, Bollywood movie trivia, Hollywood movie trivia, India web series quiz, Indian movie quiz, Horror movie quiz, Disney movie quiz, Anime quiz, Harry Potter quiz, Harry Potter house quiz, Romantic movie quiz, Action movie quiz, Sci-fi movie quiz, Action movie quiz, Adventure movie quiz, Animation movie quiz, Biography movie quiz, Comedy movie quiz, Crime movie quiz, Documentary movie quiz, Drama movie quiz, Family movie quiz, Fantasy movie quiz, Film Noir movie quiz, History movie quiz, Horror movie quiz, Music movie quiz, Musical movie quiz, Mystery movie quiz, Romance movie quiz, Sci-Fi movie quiz, Short Film movie quiz, Sport movie quiz, Superhero movie quiz, Thriller movie quiz, War movie quiz, Western movie quiz">
+    <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+    <link rel="home" href="https://dumdumsocial.com/"/>
+
+    <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+    <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+    <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+    {% include 'structured_data.html' %}
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="{% static "css/signinstyles.css" %}" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2C5JXFPS2B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-2C5JXFPS2B');
+    </script>
+    <style type="text/css">
+      @font-face{
+        font-family: NeueMachina;
+        src: url("{% static "font/NeueMachina-Light.otf" %}");
+      }
+    </style>
+  </head>
+  <body onload="myFunction()">
+    <div class='loader-wrapper' id='loader-wrapper'>
+      <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+    </div>
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </div>
+    {% endfor %}
+    <div class='main'>
+      <div class="container">
+        <div class="card">
+          <br>
+          <div class="social-login">
+            <a href="{% provider_login_url 'google' %}" class="social-btn">
+              <img class="icon" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/btn_gmail.svg' %}">
+              &nbsp;&nbsp;&nbsp;Sign in with Google &nbsp;&nbsp;&nbsp;
+            </a>
+          </div>
+          <br>
+          <br>
+          <div class="redirect">
+            <div class="tap">
+              By clicking "Sign in with Google"
+              <br>
+              I agree to Dum Dum Social's<a href="/termsofuse" class="link" style="text-decoration: none;">&nbsp;TOS</a> and<a href="/privacypolicy" class="link" style="text-decoration: none;">&nbsp;Privacy Policy.</a>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var preloader = document.getElementById('loader-wrapper');
+
+      function myFunction(){
+        preloader.style.display = 'none';
+      }
+
+      document.querySelector('.close').addEventListener("click", function() {
+        document.querySelector('.alert').style.display = "none";
+      });
+
+      function showPassword() {
+        var x = document.getElementById("password");
+        var y = document.getElementById("hide1");
+        var z = document.getElementById("hide2");
+
+        if (x.type === "password") {
+          x.type = "text";
+          y.style.display = "block";
+          z.style.display = "none";
+        } else {
+          x.type = "password";
+          y.style.display = "none";
+          z.style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>

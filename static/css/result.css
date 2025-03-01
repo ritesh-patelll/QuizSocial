@@ -1,0 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'NeueMachina';
+
+}
+.loader-wrapper {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    background: #fff;
+}
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+.lds-ellipsis div {
+position: absolute;
+top: 33px;
+width: 13px;
+height: 13px;
+border-radius: 50%;
+background: rgb(0, 0, 0);
+animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+left: 8px;
+animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+left: 8px;
+animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+left: 32px;
+animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+left: 56px;
+animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+0% {
+    transform: scale(0);
+}
+100% {
+    transform: scale(1);
+}
+}
+@keyframes lds-ellipsis3 {
+0% {
+    transform: scale(1);
+}
+100% {
+    transform: scale(0);
+}
+}
+@keyframes lds-ellipsis2 {
+0% {
+    transform: translate(0, 0);
+}
+100% {
+    transform: translate(24px, 0);
+}
+}
+body
+{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+.col{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.col .card{
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background: rgb(255, 255, 255);
+    flex-wrap: wrap;
+    
+    border-top-width: 0px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+}
+.col .card img{
+    width: calc(70vh*0.71);
+}
+.col .card .in-chara1{
+    display: none;
+    position: absolute;
+    font-size: 0.9rem;
+    justify-content: center;
+    align-content: center;
+    background: #000;
+    color: white;
+    align-items: center;
+    border-top: 2px solid #e5e5e5;
+    border-bottom: 4px solid #e5e5e5;
+    border-right: 2px solid #e5e5e5;
+    border-left: 2px solid #e5e5e5;
+    border-radius: 10px;
+    height: 45px;
+    text-align: center;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 1;
+    transform: translateY(-27px);
+    right: 13%;
+}
+.col .card .in-chara1::after{
+    border-top: 12px solid #000000;
+    border-right: 15px solid #ffffff00;
+    border-left: 15px solid #ffffff00;
+    position: absolute;
+    content: '';
+    bottom: -16px;
+}
+.col .card .in-chara2{
+    display: none;
+    position: absolute;
+    font-size: 0.9rem;
+    justify-content: center;
+    align-content: center;
+    background: #000;
+    color: white;
+    align-items: center;
+    border-top: 2px solid #e5e5e5;
+    border-bottom: 4px solid #e5e5e5;
+    border-right: 2px solid #e5e5e5;
+    border-left: 2px solid #e5e5e5;
+    border-radius: 10px;
+    height: 45px;
+    text-align: center;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    z-index: 1;
+    transform: translateY(-27px);
+    right: 7%;
+}
+.col .card .in-chara2::after{
+    border-top: 12px solid #000000;
+    border-right: 15px solid #ffffff00;
+    border-left: 15px solid #ffffff00;
+    position: absolute;
+    content: '';
+    bottom: -16px;
+}
+.col .card .btn-group1 {
+    display: flex;
+    position: relative;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+}
+.col .card .btn-group1 .fb {
+    color: black;
+    background: #fff;
+    border-radius: 10px;
+    text-decoration: none;
+    height: 50px;
+    border-top: 2px solid #e5e5e5;
+    border-bottom: 4px solid #e5e5e5;
+    border-right: 2px solid #e5e5e5;
+    border-left: 2px solid #e5e5e5;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position: relative;
+    margin-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.col .card .btn-group1 .fb:hover{
+    background: #54e103;
+    color: rgb(255, 255, 255);
+    transition: 0.5s;
+}
+.col .card .copy_down {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    width: 80%;
+}
+.col .card .copy_down .fb2 {
+    color: black;
+    background: #fff;
+    border-radius: 10px;
+    text-decoration: none;
+    width: 100%;
+    height: 50px;
+    border-top: 2px solid #e5e5e5;
+    border-bottom: 4px solid #e5e5e5;
+    border-right: 2px solid #e5e5e5;
+    border-left: 2px solid #e5e5e5;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position: relative;
+    margin-top: 20px;
+}
+.col .card .copy_down .fb2:hover{
+    background: #54e103;
+    color: rgb(255, 255, 255);
+    transition: 0.5s;
+}
+/* .col .card a:hover {
+  transform: scale(1.2);
+}
+.share-btn-container .fa-facebook {
+    color: #3b5998;
+}
+  
+.share-btn-container .fa-twitter {
+    color: #1da1f2;
+}
+  
+.share-btn-container .fa-linkedin {
+    color: #0077b5;
+}
+  
+.share-btn-container .fa-pinterest {
+    color: #bd081c;
+}
+  
+.share-btn-container .fa-whatsapp {
+    color: #25d366;
+}
+.share-btn-container {
+    transform: unset;
+    top: unset;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    flex-direction: row;
+    box-shadow: 4px 0 8px rgba(0, 0, 0, 0.3);
+    padding: 16px 0;
+    justify-content: center;
+} */
+@media (max-width: 550px) {
+    *
+    {
+        margin: 0;
+        padding: 0;
+        font-family: 'NeueMachina';
+
+    }
+    body
+    {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+    .col{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .col .card{
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        background: rgb(255, 255, 255);
+        flex-wrap: wrap;
+        
+        border-top-width: 0px;
+        border-left-width: 0px;
+        border-bottom-width: 0px;
+        border-right-width: 0px;
+    }
+    .col .card img{
+        width: 85vw;
+    }
+    .col .card .btn-group1 {
+        display: flex;
+        position: relative;
+        justify-content: space-around;
+        align-items: center;
+        align-content: center;
+        width: 100%;
+    }
+    .col .card .btn-group1 .fb {
+        color: black;
+        background: #fff;
+        border-radius: 10px;
+        text-decoration: none;
+        height: 50px;
+        border-top: 2px solid #e5e5e5;
+        border-bottom: 4px solid #e5e5e5;
+        border-right: 2px solid #e5e5e5;
+        border-left: 2px solid #e5e5e5;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        position: relative;
+        margin-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    .col .card .btn-group1 .fb:hover{
+        background: #54e103;
+        color: rgb(255, 255, 255);
+        transition: 0.5s;
+    }
+    .col .card .copy_down {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+    .col .card .copy_down .fb2 {
+        color: black;
+        background: #fff;
+        border-radius: 10px;
+        text-decoration: none;
+        width: 74vw;
+        height: 50px;
+        border-top: 2px solid #e5e5e5;
+        border-bottom: 4px solid #e5e5e5;
+        border-right: 2px solid #e5e5e5;
+        border-left: 2px solid #e5e5e5;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        position: relative;
+        margin-top: 20px;
+    }
+    .col .card .copy_down .fb2:hover{
+        background: #54e103;
+        color: rgb(255, 255, 255);
+        transition: 0.5s;
+    }
+}

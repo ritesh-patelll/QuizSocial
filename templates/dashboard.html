@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+    <title>Dashboard</title>
+  
+{% endblock head %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Dashboard</h1>
+        {% for heads in data %}
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h3>{{ heads.heading }}</h3>
+                        <div class="data">
+                            <span>{{ heads.numbers }}</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ heads.percentage }};">
+                                    <span class="percentage">{{ heads.percentage }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+  {% comment %} <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>No Results Found</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button></div>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Successfully signed in as ritesh_patelll.</strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">×</span>
+  </button></div> {% endcomment %}
+{% endblock body %}

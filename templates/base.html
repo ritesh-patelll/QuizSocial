@@ -1,0 +1,333 @@
+<!doctype html>
+{% comment %} lang="en" prefix="og: https://ogp.me/ns#" {% endcomment %}
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+  {% load static %}
+  <meta name="referrer" content="origin">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="{% static "css/base.css" %}" rel="stylesheet" rel="stylesheet">
+  <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2C5JXFPS2B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-2C5JXFPS2B');
+  </script>
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+      font-display: swap;
+    }
+  </style>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  {% block head %}{% endblock head %}
+
+</head>
+{% if user.is_authenticated %}
+  <script>
+    window.intercomSettings = {
+      api_base: "https://api-iam.intercom.io",
+      app_id: "ael9pyuz",
+      name: "{{ request.user.name|escapejs }}", // Full name
+      email: "{{ request.user.email|escapejs }}", // Email address
+      created_at: "{{ request.user.date_joined|date:"U" }}" // Signup date as a Unix timestamp
+    };
+  </script>
+
+  <script>
+    // We pre-filled your app ID in the widget URL: 'https://widget.intercom.io/widget/ael9pyuz'
+    (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/ael9pyuz';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+  </script>
+{% endif %}
+
+<body>
+  <div id="main" class="main">
+    <div class="styles__frame_iRTMJ styles__offWhite_zglVJ">
+      <div class="styles__blur_eyeYW">
+        <div class="styles__wrapper_BvhMu">
+      
+          <a class="styles__noStyleLink_xKNEy" href="/">
+            <div class="styles__logo-brand-wrapper_xzfb0 styles__black_OVhwE styles__black_OVhwE styles__clickable_KZhq5">
+              <img style="width: 100px; margin: 10px 10px;" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.svg' %}" alt="Dum Dum Social">
+            </div>
+          </a>
+      
+          <div class="styles__desktopNavBar_vP5nB">
+      
+            <form class="searchbox" method="POST" action="/">
+              {% csrf_token %}
+              {% if query %}
+                <input type="search" class="content" id="query" name="query" value="{{query}}" placeholder="🔍 27,000+ movies & series events" aria-label="Search">
+                {% else %}
+                  <input type="search" class="content" id="query" name="query" placeholder="🔍 27,000+ movies & series events" aria-label="Search">
+              {% endif %}
+            </form>
+
+            <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+              <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                <a href="/membership" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Upgrade</a>
+              </span>
+            </div>
+
+            {% if user.is_authenticated and user.is_staff %}
+              <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+                <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                  <a href="/admin/dashboard" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Dashboard</a>
+                </span>
+              </div>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+      
+              <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+                <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                  <a href="/profile" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Profile</a>
+                </span>
+              </div>
+
+              <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+                <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                  <a href="/referral_program" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Referral</a>
+                </span>
+              </div>
+
+              <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+                <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                  <a href="/events" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Events</a>
+                </span>
+              </div>
+      
+            {% endif %}
+      
+            <span class="styles__divider_h1NxE"></span>
+      
+            {% if user.is_authenticated %}
+      
+              <span class="styles__black_w4His">
+                <a href="/signout" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Log&nbsp;Out</a>
+              </span>
+      
+            {% else %}
+      
+              <div class="styles__headerMenuWrapper_MzvG8" id="3b18b846-fc71-4654-b76f-4cdf9302bb4b">
+                <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" class="styles__headerMenuButton_cLIaO">
+                  <a href="/signin?next={{request.path}}" class="nav-link" style="text-decoration: none;color: black;padding: .5rem .5rem;">Log&nbsp;In</a>
+                </span>
+              </div>
+            {% endif %}
+      
+          </div>
+          
+          <div class="styles__tabletNavMenu_YjDFA">
+            <div class="styles__headerMenuWrapper_MzvG8">
+              <form class="searchbox" method="POST" action="/">
+                {% csrf_token %}
+                {% if query %}
+                  <input type="search" class="content" id="query" name="query" value="{{query}}" aria-label="Search" style="width: 50vw;">
+                  {% else %}
+                    <input type="search" class="content" id="query" name="query" placeholder="🔍 27,000+ movies & series events" aria-label="Search" style="width: 50vw;">
+                {% endif %}
+              </form>
+            </div>
+          </div>
+          <div class="styles__tabletNavMenu_YjDFA">
+            <div class="styles__headerMenuWrapper_MzvG8" id="f980425a-edde-4ef0-bcbc-eb462576481e">
+              <span role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="Open the menu" class="styles__headerMenuButton_cLIaO">
+                <img aria-hidden="true" focusable="false" data-prefix="far" data-icon="bars" class="svg-inline--fa fa-bars fa-w-14 styles__headerMenuBurger_E_LE5" role="img" viewBox="0 0 448 512" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/menu.svg' %}" alt="^" style="width: 22px; height: 24px;">
+              </span>
+              <div role="menu" tabindex="-1">
+                <div class="styles__headerMenu_EwcJL styles__headerMenuReady__PQFB" id='desdrop'>
+
+                  {% if user.is_authenticated %}
+      
+                    <a role="menuitem" href="/profile" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Profile</span>
+                    </a>
+
+                    <a role="menuitem" href="/membership" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Upgrade</span>
+                    </a>
+
+                    {% if user.is_authenticated and user.is_staff %}
+
+                      <a role="menuitem" href="/admin/dashboard" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                        <span>Dashboard</span>
+                      </a>
+                      
+                    {% endif %}
+
+                    <a role="menuitem" href="/referral_program" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Referral</span>
+                    </a>
+
+                    <a role="menuitem" href="/events" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Events</span>
+                    </a>
+      
+                    <a role="menuitem" href="/signout" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Log&nbsp;Out</span>
+                    </a>
+      
+                  {% else %}
+      
+                    <a role="menuitem" href="/signin?next={{request.path}}" class="styles__menuLinkItem_ZgZSK" tabindex="-1">
+                      <span>Log&nbsp;In</span>
+                    </a>
+                  
+                  {% endif %}
+      
+                </div>
+              </div>
+            </div>
+          </div>
+          <button aria-label="Open the menu" class="styles__mobileMenuButton_cpQXQ" style="background: #f9f9fb;">
+            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="bars" class="svg-inline--fa fa-bars fa-w-14 " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path>
+            </svg>
+          </button>
+          
+          <div class="styles__mobileMenu_COgJ9" id='mobdrop'>
+            <div class="styles__mobileMenuDivider_Rw69L"></div>
+      
+              {% if user.is_authenticated %}
+      
+                <span class="styles__black_w4His styles__mobileLink_aJqA3 styles__mobileLink-login_otZsl">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/signout">Log&nbsp;Out</a>
+                </span>
+      
+                <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/profile">Profile</a>
+                </span>
+
+                <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/membership">Upgrade</a>
+                </span>
+
+                {% if user.is_authenticated and user.is_staff %}
+
+                  <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                    <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/admin/dashboard">Dashboard</a>
+                  </span>
+
+                {% endif %}
+      
+                <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/referral_program">Referral</a>
+                </span>
+      
+                <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/events">Events</a>
+                </span>
+              
+              {% else %}
+      
+                <span class="styles__black_w4His styles__mobileLink_aJqA3">
+                  <a class="hoverable styles__link_jSm54 styles__no-visited-coloring_Rm2Ai styles__underline-never_Ih7Nq" href="/signin?next={{request.path}}">Log&nbsp;In</a>
+                </span>
+              
+              {% endif %}
+            </div>
+          </div>
+          <div class="searchbar" style="width: 100vw;">
+            <form class="searchbox" method="POST" action="/" style="padding-left: 5vw;">
+              {% csrf_token %}
+              {% if query %}
+                <input type="search" class="content" id="query" name="query" value="{{query}}" aria-label="Search" style="width: 90vw;">
+                {% else %}
+                  <input type="search" class="content" id="query" name="query" placeholder="🔍 27,000+ movies & series events" aria-label="Search" style="width: 90vw;">
+              {% endif %}
+            </form>
+          </div>
+      </div>
+    </div>
+    {% for message in messages %}
+      {% if not user.is_authenticated and user|should_display_message:message %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </div>
+      {% endif %}
+      {% if user.is_authenticated %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          <strong>{{ message }}</strong>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% block body %} {% endblock body %}
+    <div style="position: relative; display: flex; top: 30px; justify-content: center; align-items: center; align-content: center; text-align: center;">
+      <footer class="py-3 my-4" style="width: 80%;">
+        <div class="d-flex flex-wrap justify-content-between align-items-center border-top" style="padding-top: 1rem!important;margin-top: 1.5rem!important;">
+          <ul class="nav justify-content-center border-bottom pb-3 mb-3 d-flex align-items-center">
+            <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+            <li class="nav-item"><a href="/profile" class="nav-link px-2 text-muted">Profile</a></li>
+            <li class="nav-item"><a href="/membership" class="nav-link px-2 text-muted">Upgrade</a></li>
+            
+            {% if user.is_authenticated and user.is_staff %}
+            
+              <li class="nav-item"><a href="/admin/dashboard" class="nav-link px-2 text-muted">Dashboard</a></li>
+
+            {% endif %}
+            <li class="nav-item"><a href="/referral_program" class="nav-link px-2 text-muted">Referral</a></li>
+            <li class="nav-item"><a href="/events" class="nav-link px-2 text-muted">Events</a></li>
+            <li class="nav-item"><a href="/termsofuse" class="nav-link px-2 text-muted">Terms&nbsp;of&nbsp;Use</a></li>
+            <li class="nav-item"><a href="/privacypolicy" class="nav-link px-2 text-muted">Privacy&nbsp;Policy</a></li>
+          </ul>
+          <ul class="nav col-md-4 justify-content-end pb-3 mb-3 border-bottom list-unstyled d-flex">
+            <li class="ms-3">
+              {% comment %} <a class="text-muted" href="https://twitter.com/quiz_social1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-twitter" viewBox="0 0 16 16">
+                  <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
+                </svg>
+              </a> {% endcomment %}
+              <a href="/_link/?link=https%3A%2F%2Fwa.me%2F%2B918860623125%3Ftext%3DI%25E2%2580%2599m%2Ba%2BDum%2BDum%2BSocial%2Buser&target=FwfbNxh9ImE4OX%2Bb7yDDcmyd0JoXctM%2BaxkQJ3GbgJxbNkuiWzlMEGHmg%2BfdSzAmvhRS%2BYUh6fZEDkKoNR9ibqnUNe5GoGDquAna0tmQSsWjnMwjs6k1dsHSGiz%2BUSPrIO12D%2FK%2BIuPkkrIH3Ej27Ycw9R5oHsVXK2kEc3WwR49fk6qu3%2Fv%2B&iv=04sY09QoZgeEil4A">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+        <p class="text-center text-muted">© 2023 Quiz Social, Inc., 651 N Broad St, Suite 201, Middletown, DE 19709</p>
+      </footer>
+    </div>
+  </div>
+  <script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
+  <script type="text/javascript">
+
+    
+
+    document.querySelector('#f980425a-edde-4ef0-bcbc-eb462576481e').addEventListener("click", function() {
+      if (document.getElementById("desdrop").classList.value.split(" ").includes("styles__headerMenuOpen_ymeMg")){
+        document.getElementById("desdrop").classList.remove("styles__headerMenuOpen_ymeMg");
+      } else {
+        document.getElementById("desdrop").classList.add("styles__headerMenuOpen_ymeMg");
+      }
+    });
+
+    document.querySelector('.styles__mobileMenuButton_cpQXQ').addEventListener("click", function() {
+      if (document.getElementById("mobdrop").classList.value.split(" ").includes("styles__menuOpened_cnW7e")){
+        document.getElementById("mobdrop").classList.remove("styles__menuOpened_cnW7e");
+      } else {
+        document.getElementById("mobdrop").classList.add("styles__menuOpened_cnW7e");
+      }
+    });
+
+    document.querySelector('.close').addEventListener("click", function() {
+      document.querySelector('.alert').style.display = "none";
+    });
+
+    document.getElementById('input').addEventListener('keyup',function(){console.log(document.getElementById('input').value);});
+
+  </script>
+  <script type="text/javascript"> _linkedin_partner_id = "5489809"; window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || []; window._linkedin_data_partner_ids.push(_linkedin_partner_id); </script><script type="text/javascript"> (function(l) { if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])}; window.lintrk.q=[]} var s = document.getElementsByTagName("script")[0]; var b = document.createElement("script"); b.type = "text/javascript";b.async = true; b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js"; s.parentNode.insertBefore(b, s);})(window.lintrk); </script> <noscript> <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=5489809&fmt=gif" /> </noscript>
+  
+</body>
+</html>

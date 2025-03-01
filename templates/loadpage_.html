@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% load static %}
+  <title>Dum Dum Social</title>
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link href="{% static "css/loadpage.css" %}" rel="stylesheet">
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+</head>
+<body>
+  <div class='loader-wrapper' id='loader-wrapper'>
+    <div style="padding-left: 10px; padding-right: 10px;">
+      <h4 style="font-size: 18px;color: #9f8e8e;text-align: center;font-weight: lighter;">The game has ended. You are being redirected to the homepage.</h4>
+    </div>
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
+  <form class="report_result" id="report_result" method="POST" action="{{ link }}">
+    {% csrf_token %}
+    <input type="hidden" id="score" name="score" value="{{score}}">
+    <input type="hidden" id="reportedimg" name="reportedimg" value="{{reportedimg}}">
+    <input type="hidden" id="reportedtext" name="reportedtext" value="{{reportedtext}}">
+    <input type="hidden" id="playingwith" name="playingwith" value="{{playingwith}}">
+    <input type="submit" value="create form" style="visibility:hidden" />
+  </form>
+  <script type="text/javascript">
+    {% comment %} window.location.href = '/result/' + '{{type}}' + '/' + '{{type_id}}'; {% endcomment %}
+    document.getElementById("report_result").submit();
+  </script>
+</body>
+</html>

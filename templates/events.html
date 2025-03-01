@@ -1,0 +1,745 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block head %}
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Dum Dum Social: TV Series Quiz | Movie Quiz | Anime Quiz</title>
+
+  <meta property="og:title" content="Dum Dum Social: Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+  <meta property="og:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta property="og:locale" content="en">
+  <meta property="og:site_name" content="Dum Dum Social">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@quiz_social">
+  <meta name="twitter:title" content="Dum Dum Social: TV Series Quiz | Movie Quiz | Anime Quiz">
+  <meta name="twitter:description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+  <meta name="description" content="Character Dumb Charades for Movie and TV Show Fans">
+  <meta name="keywords" content="Movie Quiz, TV Show Quiz, Movie Trivia, TV Show Trivia, Film Quiz, Cinema Quiz, Web series quiz, Web series trivia, Popular movie quiz, Popular web series quiz, Trending movie quiz, Popular tv show quiz, Bollywood movie quiz, Hollywood movie quiz, Bollywood movie trivia, Hollywood movie trivia, India web series quiz, Indian movie quiz, Horror movie quiz, Disney movie quiz, Anime quiz, Harry Potter quiz, Harry Potter house quiz, Romantic movie quiz, Action movie quiz, Sci-fi movie quiz, Action movie quiz, Adventure movie quiz, Animation movie quiz, Biography movie quiz, Comedy movie quiz, Crime movie quiz, Documentary movie quiz, Drama movie quiz, Family movie quiz, Fantasy movie quiz, Film Noir movie quiz, History movie quiz, Horror movie quiz, Music movie quiz, Musical movie quiz, Mystery movie quiz, Romance movie quiz, Sci-Fi movie quiz, Short Film movie quiz, Sport movie quiz, Superhero movie quiz, Thriller movie quiz, War movie quiz, Western movie quiz">
+  <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+  <link rel="home" href="https://dumdumsocial.com/"/>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+
+  <link href="{% static "css/events.css" %}" rel="stylesheet">
+  <style type="text/css">
+    @font-face{
+      font-family: NeueMachina;
+      src: url("{% static "font/NeueMachina-Light.otf" %}");
+    }
+  </style>
+  <meta name="google-site-verification" content="IMpGunnR_oB9TKhxQKd0mzLHNKKbM734ZGLNymZsa7A" />
+  
+{% endblock head %}
+
+{% block body %}
+<div class="offer_sec">
+    <div class='full_header'>
+        <div class='header_pos'>
+            <div class="offer_heading_text">
+                EVENTS
+                <div onclick="edit()" class="offer_edit_text">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                    </svg>
+                    Edit
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offer_discr">
+        {% regroup event_details by event_date_time.date as events_by_date %}
+        
+        {% for date_group in events_by_date %}
+            <hr>
+            <div class="date_heading">
+                <h3>{{ date_group.grouper|date:"l-F j" }}</h3>
+            </div>
+            {% for event in date_group.list %}
+                <div class='event_time_box_pos'>
+                    <div class='one_event_time_box_pos' data-time="{{ event.event_date_time|date:"c" }}">
+                        <span class="event-time">
+                            <div class='hr_pos'>
+                                <span class="event-hour">{{ event.event_date_time|time:"g" }}</span>
+                            </div>
+                            <div class='min_pos'>
+                                <span class="event-minutes">{{ event.event_date_time|time:"i A" }}</span>
+                            </div>
+                        </span>
+                        <div class="offer_discr_box">
+                            <div class="offer_discr_text">
+                                <h4>{{ event.player1 }}&nbsp;&nbsp;x&nbsp;&nbsp;{{ event.player2 }}</h4>
+                            </div>
+                            <div class="offer_discr_text">
+                                <h5>{{ event.event_name }}</h5>
+                            </div>
+                            {% if event.player1_decision == False or event.player2_decision == False %}
+                                {% if event.player1_decision == False and request.user == event.player1 %}
+                                    <div class="rejected-message">Rejected by {{ event.player1 }}</div>
+                                {% elif event.player2_decision == False and request.user == event.player2 %}
+                                    <div class="rejected-message">Rejected by {{ event.player2 }}</div>
+                                {% else %}
+                                    {% if event.player1_decision == False %}
+                                        <div class="rejected-message">Rejected by {{ event.player1 }}</div>
+                                    {% elif event.player2_decision == False %}
+                                        <div class="rejected-message">Rejected by {{ event.player2 }}</div>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                <div class="countdown-timer" data-event-time="{{ event.event_date_time|date:"c" }}">
+                                    <span class="days"></span>&nbsp;days&nbsp;&nbsp;
+                                    <span class="hours"></span>&nbsp;hours&nbsp;&nbsp;
+                                    <span class="minutes"></span>&nbsp;minutes&nbsp;&nbsp;
+                                    <span class="seconds"></span>&nbsp;seconds&nbsp;&nbsp;
+                                </div>
+                                <div class="didnt-answer" style="display: none;">
+                                    {% if event.player1_decision == None and event.player2_decision == None %}
+                                        {% if request.user == event.player1 %}
+                                            Event canceled: {{ event.player1 }} unable to attend.
+                                        {% else %}
+                                            Event canceled: {{ event.player2 }} unable to attend.
+                                        {% endif %}
+                                    {% else %}
+                                        {% if event.player1_decision == None %}
+                                            Event canceled: {{ event.player1 }} unable to attend.
+                                        {% endif %}
+                                        {% if event.player2_decision == None %}
+                                            Event canceled: {{ event.player2 }} unable to attend.
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                                <a href="{{ event.event_link }}" class="join-button" style="display: none;">
+                                    <img class='joint_event_img' src="https://quiz-social-static-and-media-files.s3.amazonaws.com/static/img/youtube_arrrow_gif.gif">Join
+                                </a>
+                                <div class="join-countdown-timer" style="display: none;">
+                                    <span class="join-minutes"></span>&nbsp;minutes&nbsp;&nbsp;
+                                    <span class="join-seconds"></span>&nbsp;seconds&nbsp;&nbsp;
+                                </div>
+                                {% if event.player1_decision == None and request.user == event.player1 %}
+                                    <div class="decision-buttons">
+                                        <span>Going?</span>
+                                        <a href="{% url 'accept_event' event.id %}" class="accept-button">Yes</a>
+                                        <a href="{% url 'reject_event' event.id %}" class="reject-button">No</a>
+                                    </div>
+                                {% endif %}
+                                {% if event.player2_decision == None and request.user == event.player2 %}
+                                    <div class="decision-buttons">
+                                        <span>Going?</span>
+                                        <a href="{% url 'accept_event' event.id %}" class="accept-button">Yes</a>
+                                        <a href="{% url 'reject_event' event.id %}" class="reject-button">No</a>
+                                    </div>
+                                {% endif %}
+                                {% if event.player1_decision == True and request.user == event.player1 %}
+                                    <div class="decision-buttons">
+                                        <a href="{% url 'reject_event' event.id %}" class="reject-button">Can't attend anymore</a>
+                                    </div>
+                                {% endif %}
+                                {% if event.player2_decision == True and request.user == event.player2 %}
+                                    <div class="decision-buttons">
+                                        <a href="{% url 'reject_event' event.id %}" class="reject-button">Can't attend anymore</a>
+                                    </div>
+                                {% endif %}
+
+                            {% endif %}
+                            {% if event.player1_joined == True and event.player2_joined == True %}
+                                {% if request.user == event.player1 %}
+                                    {% if event.player1_liked == True %}
+                                        <div id="{{ event.id }}" class="heart1 heart-line" onclick="favfun(this.id)"></div>
+                                        {% else %}
+                                            <div id="{{ event.id }}" class="heart1" onclick="favfun(this.id)"></div>
+                                    {% endif %}
+                                {% elif request.user == event.player2 %}
+                                    {% if event.player1_liked == True %}
+                                        <div id="{{ event.id }}" class="heart1 heart-line" onclick="favfun(this.id)"></div>
+                                        {% else %}
+                                            <div id="{{ event.id }}" class="heart1" onclick="favfun(this.id)"></div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% empty %}
+            <div class="offer_discr_box">
+                <div class="offer_discr_text">
+                    <h4>No events found.</h4>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="bg-modal1">
+    <div class="modal-contents1">
+        {% if not selfie_verification %}
+    
+            <div id="pre_identity_verification" class="pre_identity_verification" style="display:flex;">
+                <div class="fav_heading">
+                    <h2>Verify with a selfie</h2>
+                </div>
+                <img class="fav_img" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/selfie.png' %}">
+                <h3>
+                    Click photo of your face so that we can 
+                    <br>
+                    verify your identity
+                </h3>
+                <div class="favBtn" onClick="fav_continue_Btn(this)">Continue</div>
+            </div>
+            <div id="identity_verification" class="identity_verification" style="display: none;">
+                <div class="fav_heading">
+                    <h2>Verify with a selfie</h2>
+                </div>
+                <video id="video" style="margin: 20px;">Video stream not available.</video>
+                <h3 id="error_message">
+                    Make sure your face is in the center of the frame and away
+                    <br>
+                    from edges
+                </h3>
+                <div class="favBtn" id="startbutton">Take photo</div>
+            </div>
+            <div id="processing_image" class="processing_image" style="display: none;">
+                <div class="fav_heading">
+                    <h2>Processing Image</h2>
+                </div>
+                <canvas id="canvas"> </canvas>
+                <div class="load_text">
+                    <div class="load"></div>
+                    <h3 style="margin-bottom: 0px;">Analyzing image...</h3>
+                </div>
+            </div>
+            <div id="post_identity_verification" class="post_identity_verification" style="display: none;">
+                <h2>Dum Dum Social</h2>
+                <div class="text_img">
+                    <img class="svg_fav_img" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/lock.svg' %}">&nbsp;
+                    <h3>SECURE IDENTITY VERIFICATION</h3>
+                </div>
+                <hr style=" margin: 1rem 0px 3rem 0px; ">
+                <div class="text_img">
+                    <img class="svg_fav_img" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/term3.svg' %}">&nbsp;
+                    <h2>Identity Verification Successful</h2>
+                </div>
+                <br>
+                <h3>
+                    Thank you for providing your information. Dum Dum Social will
+                    <br>
+                    reach out if additional details are required.
+                </h3>
+                <a class="favBtn" href="/events">Continue</a>
+            </div>
+
+            {% else %}
+                <div section id="fav_days" class="fav_main" style="display:none;">
+                    <div class="fav_heading">
+                        <h2>Pick at least two days you are available to play.</h2>
+                    </div>
+                    <div class="column_options">
+                        <div class="form-check">
+                            {% if 'Monday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Monday" id="monday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Monday" id="monday">
+                            {% endif %}
+                            <label class="form-check-label" for="monday">
+                                Monday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Tuesday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Tuesday" id="tuesday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Tuesday" id="tuesday">
+                            {% endif %}
+                            <label class="form-check-label" for="tuesday">
+                                Tuesday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Wednesday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Wednesday" id="wednesday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Wednesday" id="wednesday">
+                            {% endif %}
+                            <label class="form-check-label" for="wednesday">
+                                Wednesday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Thursday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Thursday" id="thursday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Thursday" id="thursday">
+                            {% endif %}
+                            <label class="form-check-label" for="thursday">
+                                Thursday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Friday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Friday" id="friday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Friday" id="friday">
+                            {% endif %}
+                            <label class="form-check-label" for="friday">
+                                Friday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Saturday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Saturday" id="saturday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Saturday" id="saturday">
+                            {% endif %}
+                            <label class="form-check-label" for="saturday">
+                                Saturday
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if 'Sunday' in fav_days %}
+                                <input class="fav_days_check_input" type="checkbox" value="Sunday" id="sunday" checked>
+                                {% else %}
+                                <input class="fav_days_check_input" type="checkbox" value="Sunday" id="sunday">
+                            {% endif %}
+                            <label class="form-check-label" for="sunday">
+                                Sunday
+                            </label>
+                        </div>
+                    </div>
+                    <div class="favBtn" onClick="fav_continue_Btn(this)">Continue</div>
+                </div>
+                <div id="fav_time" class="fav_main" style="display: none;">
+                    <div class="fav_heading">
+                        <h2>Pick your timezone and best suited time slots.</h2>
+                    </div>
+                    <div>
+                        <select id="timezoneutc_dropdown" class="dropdown">
+                        </select>
+                    </div>
+                    <div class="column_options">
+                        <div class="form-check">
+                            {% if '8am-12pm' in fav_time %}
+                                <input class="fav_time_check_input" type="checkbox" value="8am-12pm" id="eigthtotwelve" checked>
+                                {% else %}
+                                <input class="fav_time_check_input" type="checkbox" value="8am-12pm" id="eigthtotwelve">
+                            {% endif %}
+                            <label class="form-check-label" for="eigthtotwelve">
+                                8am-12pm
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if '12pm-4pm' in fav_time %}
+                                <input class="fav_time_check_input" type="checkbox" value="12pm-4pm" id="twelvetofour" checked>
+                                {% else %}
+                                <input class="fav_time_check_input" type="checkbox" value="12pm-4pm" id="twelvetofour">
+                            {% endif %}
+                            <label class="form-check-label" for="twelvetofour">
+                                12pm-4pm
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if '4pm-8pm' in fav_time %}
+                                <input class="fav_time_check_input" type="checkbox" value="4pm-8pm" id="fourtoeigth" checked>
+                                {% else %}
+                                <input class="fav_time_check_input" type="checkbox" value="4pm-8pm" id="fourtoeigth">
+                            {% endif %}
+                            <label class="form-check-label" for="fourtoeigth">
+                                4pm-8pm
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            {% if '8pm-10pm' in fav_time %}
+                                <input class="fav_time_check_input" type="checkbox" value="8pm-10pm" id="eigthtoten" checked>
+                                {% else %}
+                                <input class="fav_time_check_input" type="checkbox" value="8pm-10pm" id="eigthtoten">
+                            {% endif %}
+                            <label class="form-check-label" for="eigthtoten">
+                                8pm-10pm
+                            </label>
+                        </div>
+                    </div>
+                    <div class="favBtn" onClick="fav_continue_Btn(this)">Continue</div>
+                </div>
+        {% endif %}
+    </div>
+</div>
+
+    
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script type="text/javascript">
+    var None = false;
+    var False = false;
+    var True = true;
+    var selfie_verification = {{ selfie_verification|safe }};
+    var timezone_utc_tuple = {{ timezone_utc_tuple|safe }};
+    var timezoneutc = "{{ timezoneutc|safe }}";
+    var fav_time = "{{ fav_time|safe }}"
+    var fav_days = "{{ fav_days|safe }}"
+
+    const width = 460; // We will scale the photo width to this
+    
+    let height = 0; // This will be computed based on the input stream
+    let streaming = false;
+    let video = null;
+    let canvas = null;
+    let startbutton = null;
+
+    function updateCountdownAndJoinButton() {
+        $('.countdown-timer').each(function() {
+            var eventTime = new Date($(this).data('event-time'));
+            var endTime = new Date(eventTime);
+            endTime.setMinutes(endTime.getMinutes() + 10);
+            var now = new Date();
+            var diff = eventTime - now;
+            var endedDiff = endTime - now;
+            var joinDiff = endTime - now - (8 * 60 * 1000);
+    
+            if ($(this).siblings('.rejected-message').length == 0) {
+                if (diff <= 0) {
+                    if ($(this).siblings('.didnt-answer').text().trim().length > 0) {
+                        $(this).siblings('.decision-buttons').hide();
+                        $(this).hide();
+                        $(this).siblings('.didnt-answer').show();
+                    } else {
+                        $(this).html('<span class="green-dot"></span> <span style="color:green">Started</span>');
+                        // Check if '.didnt-answer' has text before showing it
+                        if ($(this).siblings('.didnt-answer').text().trim().length > 0) {
+                            $(this).siblings('.didnt-answer').show();
+                        }
+
+                        var joinMinutes = Math.floor(joinDiff / (1000 * 60));
+                        var joinSeconds = Math.floor((joinDiff % (1000 * 60)) / 1000);
+            
+                        $(this).siblings('.join-countdown-timer').find('.join-minutes').text(joinMinutes);
+                        $(this).siblings('.join-countdown-timer').find('.join-seconds').text(joinSeconds);
+                        $(this).siblings('.join-countdown-timer').show();
+
+                        if (endedDiff <= 0 || diff - (2 * 60 * 1000) <= 0) {
+                            $(this).html('<span class="red-dot"></span> <span style="color:red">Ended</span>');
+                            $(this).siblings('.join-button').hide();
+                            $(this).siblings('.join-countdown-timer').hide();
+                            $(this).siblings('.didnt-answer').hide();
+                        } else if (joinDiff <= 0) {
+                            $(this).html('<span class="green-dot"></span> <span style="color:green">Started</span>');
+                            $(this).siblings('.join-button').hide();
+                            $(this).siblings('.join-countdown-timer').hide();
+                        } else {
+                            $(this).siblings('.join-button').show();
+                        }
+                    }
+                } else {
+                    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+                    $(this).find('.days').text(days);
+                    $(this).find('.hours').text(hours);
+                    $(this).find('.minutes').text(minutes);
+                    $(this).find('.seconds').text(seconds);
+                    $(this).siblings('.decision-buttons').show();
+                    $(this).siblings('.join-button').hide();
+                    $(this).siblings('.join-countdown-timer').hide();
+                    $(this).siblings('.didnt-answer').hide();
+                }
+            }
+        });
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const eventTimeBoxes = document.querySelectorAll(".one_event_time_box_pos");
+    
+        eventTimeBoxes.forEach(function(eventTimeBox) {
+            const eventDateTime = new Date(eventTimeBox.dataset.time);
+            const eventHour = eventDateTime.getHours() % 12 || 12;
+            const eventMinutes = eventDateTime.getMinutes();
+            const amPm = eventDateTime.getHours() >= 12 ? "PM" : "AM";
+    
+            eventTimeBox.querySelector(".event-hour").textContent = eventHour;
+            eventTimeBox.querySelector(".event-minutes").textContent = eventMinutes.toString().padStart(2, "0") + " " + amPm;
+        });
+    });
+
+    $(document).ready(function() {
+        updateCountdownAndJoinButton();
+        setInterval(updateCountdownAndJoinButton, 1000);
+    });
+
+    async function fav_asyncfun(task, vari) {
+        if (task == 'fav_days_update') {
+            let response = await fetch(`/fav/fav_days_update/?fav_selected_days=${JSON.stringify(vari)}`)
+            let data = await response.json()
+        }
+        else if (task == 'fav_time_update') {
+            let response = await fetch(`/fav/fav_time_update/?fav_selected_time=${JSON.stringify(vari)}`)
+            let data = await response.json()
+        }
+        else if (task == 'saving_photo') {
+            let response = await fetch(`/fav/saving_photo/`, {
+              method: 'POST',
+              body: JSON.stringify({ photo: vari[0] }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+            });
+            let data = await response.json();
+      
+            if (data.status == 'error') {
+              document.getElementById('error_message').innerHTML = data.message;
+              document.querySelector('#processing_image').style.display = 'none';
+              document.querySelector('#identity_verification').style.display = 'flex';
+              if (data.message == 'Face is already associated with another account.') {
+                window.location.href = '/'
+              }
+            }
+            else if (data.status == 'done') {
+              document.getElementById('error_message').innerHTML = '';
+              if (data.selfie_verification){
+                video.pause(); // pause the video
+                video.srcObject.getTracks().forEach((track) => track.stop()); // stop all tracks in the media stream
+                document.querySelector('#processing_image').style.display = 'none'
+                document.querySelector('#post_identity_verification').style.display = 'flex'
+              }
+              else {
+                document.querySelector('#processing_image').style.display = 'none';
+                document.querySelector('#identity_verification').style.display = 'flex';
+              }
+            }
+            
+        }
+        return 'done'
+    }
+
+    function showViewLiveResultButton() {
+        if (window.self !== window.top) {
+          document.querySelector(".contentarea").remove();
+          const button = document.createElement("button");
+          button.textContent = "View live result of the example code above";
+          document.body.append(button);
+          button.addEventListener("click", () => window.open(location.href));
+          return true;
+        }
+        return false;
+    }
+
+    function startup() {
+        if (showViewLiveResultButton()) {
+          return;
+        }
+        video = document.getElementById("video");
+        canvas = document.getElementById("canvas");
+        startbutton = document.getElementById("startbutton");
+    
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((stream) => {
+            video.srcObject = stream;
+            video.play();
+          })
+          .catch((err) => {
+            console.error(`An error occurred: ${err}`);
+          });
+    
+        video.addEventListener(
+          "canplay",
+          (ev) => {
+            if (!streaming) {
+              height = video.videoHeight / (video.videoWidth / width);
+    
+              // Firefox currently has a bug where the height can't be read from
+              // the video, so we will make assumptions if this happens.
+    
+              if (isNaN(height)) {
+                height = width / (4 / 3);
+              }
+    
+              video.setAttribute("width", width);
+              video.setAttribute("height", height);
+              canvas.setAttribute("width", width);
+              canvas.setAttribute("height", height);
+              streaming = true;
+            }
+          },
+          false
+        );
+    
+        startbutton.addEventListener(
+          "click",
+          (ev) => {
+            takepicture();
+            ev.preventDefault();
+          },
+          false
+        );
+    }
+
+    function takepicture() {
+        const context = canvas.getContext("2d");
+        if (width && height) {
+            canvas.width = width;
+            canvas.height = height;
+            context.drawImage(video, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL();
+            document.querySelector('#identity_verification').style.display = 'none';
+            document.querySelector('#processing_image').style.display = 'flex';
+            fav_asyncfun('saving_photo', [dataUrl]);
+        }
+    }
+
+    async function fav_continue_Btn(element) {
+        try {
+            if (document.querySelector('#pre_identity_verification').style.display == 'flex') {
+            document.querySelector('#pre_identity_verification').style.display = 'none'
+            document.querySelector('#identity_verification').style.display = 'flex'
+            startup();
+            }
+        } catch {
+
+        }
+        try {
+            if (document.querySelector('#fav_days').style.display == 'flex') {
+                element.innerHTML = '';
+
+                // Create a new div element with class "load"
+                const loadDiv = document.createElement('div');
+                loadDiv.className = 'load';
+
+                // Append the new div to the element
+                element.appendChild(loadDiv);
+
+                var fav_selected_days = [];
+                var r = document.getElementsByTagName("input");
+                for (var i = 0; i < r.length; i++) {
+                    if (r[i].classList.contains("fav_days_check_input") && r[i].type == "checkbox" && r[i].checked) {
+                    fav_selected_days.push(r[i].value);
+                    }
+                }
+                if ( fav_selected_days.length > 0 ){
+                    await fav_asyncfun('fav_days_update', fav_selected_days)
+                    document.querySelector('#fav_days').style.display = 'none'
+                    document.querySelector('#fav_time').style.display = 'flex'
+                    element.removeChild(loadDiv);
+                    element.innerHTML = 'Continue';
+                } else {
+                    swal({
+                        text: "You have to selete atleast 1 day.",
+                        dangerMode: true,
+                    });
+                }
+            }
+            else if (document.querySelector('#fav_time').style.display == 'flex') {
+                element.innerHTML = '';
+
+                // Create a new div element with class "load"
+                const loadDiv = document.createElement('div');
+                loadDiv.className = 'load';
+
+                // Append the new div to the element
+                element.appendChild(loadDiv);
+                
+                var fav_selected_time = [];
+                var r = document.getElementsByTagName("input");
+                for (var j = 0; j < r.length; j++) {
+                    if (r[j].classList.contains("fav_time_check_input") && r[j].type == "checkbox" && r[j].checked) {
+                    fav_selected_time.push(r[j].value);
+                    }
+                }
+                if (document.querySelector("select#timezoneutc_dropdown").value == 'UTC+00:00 (Monrovia, Reykjavik)') {
+                    swal({
+                        text: "Select your timezone",
+                        dangerMode: true,
+                    });
+                } else{
+                    if ( fav_selected_time.length > 0 ){
+                        await fav_asyncfun('fav_time_update', fav_selected_time)
+                        if ( fav_time.length == 0 ) {
+                            window.location.href = '/'
+                        } else {
+                            document.querySelector('#fav_time').style.display = 'none';
+                            document.querySelector('.bg-modal1').style.display = 'none';
+                            element.removeChild(loadDiv);
+                            element.innerHTML = 'Continue';
+                        }
+                    } else {
+                        swal({
+                            text: "You have to selete atleast 1 time slot.",
+                            dangerMode: true,
+                        });
+                    }
+                }
+            }
+        } catch {
+            
+        }
+    }
+
+    async function anotherhandleSubmit(selected_ddv) {
+        let response = await fetch(`/change/timezoneutc/?timezoneutc=${selected_ddv}`)
+        let data = await response.json()
+        if (data.status == 'done') {
+            timezoneutc = selected_ddv
+        }
+        return 'done'
+    }
+
+    function listmQ(){
+        anotherhandleSubmit(this.value)
+    }
+
+    Object.entries(timezone_utc_tuple).forEach(([key, value]) => {
+        if (key == timezoneutc) {
+            $("select#timezoneutc_dropdown").append(
+                $('<option selected="selected"></option>').val(key).html(value)
+            );
+            
+        }else {
+            $("select#timezoneutc_dropdown").append(
+                $('<option></option>').val(key).html(value)
+            );
+        }
+    });
+
+    document.querySelector("select#timezoneutc_dropdown").onchange = listmQ;
+
+    async function eventliked(event_id, type_) {
+        let response = await fetch(`/eventliked/?event_id=${event_id}&type_=${type_}`)
+        let data = await response.json()
+        return 'done'
+    }
+
+    function favfun(id) {
+        if (document.getElementById(id).classList.contains('heart-line')) {
+          document.getElementById(id).classList.remove("heart-line");
+          eventliked(id, 'dislike')
+        }
+        else {
+          document.getElementById(id).classList.add("heart-line");
+          eventliked(id, 'like')
+        }
+    }
+
+    if ((fav_days.length == 0 || fav_time.length == 0) && selfie_verification ) {
+        document.querySelector('#fav_days').style.display = 'flex';
+    } else {
+        document.querySelector('.bg-modal1').style.display = 'none';
+    }
+
+    function edit() {
+        document.querySelector('#fav_days').style.display = 'flex';
+        document.querySelector('.bg-modal1').style.display = 'flex';
+    }
+
+</script>
+{% endblock body %}

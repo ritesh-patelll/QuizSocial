@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+  <title>Dum Dum Social: Upgrade</title>
+
+  <meta property="og:title" content="Dum Dum Social: Upgrade">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+  <meta property="og:description" content="">
+  <meta property="og:locale" content="en">
+  <meta property="og:site_name" content="Dum Dum Social">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@quiz_social">
+  <meta name="twitter:title" content="Dum Dum Social: Upgrade">
+  <meta name="twitter:description" content="">
+  <meta name="twitter:image" content="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/dumdumsociallogo.png' %}">
+
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link rel="canonical" href="https://dumdumsocial.com{{request.get_full_path}}"/>
+  <link rel="home" href="https://dumdumsocial.com/"/>
+
+  <link rel="shortcut icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+  <link rel="apple-touch-icon" type="image/x-icon" href="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'favicon.ico' %}">
+{% endblock head %}
+
+{% block body %}
+<body>
+    <style type="text/css">
+      @font-face {
+        font-family: NeueMachina;
+        src: url("/static/font/NeueMachina-Light.otf");
+      }
+    </style>
+    <link href="{% static "css/pricing.css" %}" rel="stylesheet">
+    <div style="position: static !important;"></div>
+    <div style="position: static !important;"></div>
+    <div class="page-wrapper">
+      <section class="section pricing wf-section">
+        <div class="container-medium-621px pricing" data-w-id="a8022bec-85df-fd06-366f-b5e3ca2f1f50" style="-webkit-transform:translate3d(0, 0, 0) scale3d(0.9, 0.9, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 0, 0) scale3d(0.9, 0.9, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 0, 0) scale3d(0.9, 0.9, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 0, 0) scale3d(0.9, 0.9, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);">
+          <h1 class="title pricing"> Upgrade Your Social! </h1>
+        </div>
+        <div class="container-default pricing w-container" data-w-id="52bcd87a-a86e-beed-cf46-6c499fae6e05" style="-webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);">
+          <div class="pricing-collection-list-wrapper w-dyn-list">
+            <div class="pricing-wrapper w-dyn-items" role="list">
+              <div class="plan-single-item w-dyn-item" role="listitem">
+                <form action={{ sociallink }} method="POST">
+                  {% comment %} <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1MRZH4FTdzeHtGhWkhKi9qHC" /> {% endcomment %}
+                  <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LgOH8FTdzeHtGhWOyyiA0XG" />
+                  <button class="card plan-item w-inline-block" type="submit">
+                    <div class="card-plan-item-content-top"> <div class="card-plan-item-title-wrapper">
+                        <h2 class="title card-plan-item"> Social </h2>
+                        <div class="title h3-size card-plan-item-price-popular"> $ 2.99 USD / month </div>
+                      </div> {% comment %} <p class="paragraph card-plan-item-summary"> Description </p> {% endcomment %} </div>
+                    <div class="divider card-plan-item"></div>
+                    <div class="card-plan-item-content-bottom">
+                      <div class="w-layout-grid card-plan-item-features-grid">
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 4 Sessions Daily </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Schedule Games and Get Notified </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Match with Verified Profiles </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Get rewarded for  Moderation </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 4 Quizzes Daily </div>
+                        </div>
+                      </div>
+                      <div class="card-plan-item-button-wrapper">
+                        {% if social %}
+                          <div class="button-primary full-width card-plan-item"> Cancel Your Subscription </div>
+                          {% else %}
+                            <div class="button-primary full-width card-plan-item"> Upgrade </div>
+                        {% endif %}
+                        <div class="paragraph-small card-plan-item-small-print"></div>
+                      </div>
+                    </div> {% comment %} <div class="card-plan-item-popular-tag"> Popular </div> {% endcomment %}
+                  </button>
+                </form>
+                <div class="space card-plan-item-popular"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pricing-collection-list-wrapper w-dyn-list">
+            <div class="pricing-wrapper w-dyn-items" role="list">
+              <div class="plan-single-item w-dyn-item" role="listitem">
+                <form action={{ ssociallink }} method="POST">
+                  {% comment %} <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LfPz1FTdzeHtGhWSBEK3Zbl" /> {% endcomment %}
+                  <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LgOHyFTdzeHtGhWTcc5xeYR" />
+                  <button class="card plan-item w-inline-block" type="submit">
+                    <div class="card-plan-item-content-top"> <div class="card-plan-item-title-wrapper">
+                        <h2 class="title card-plan-item"> Super Social </h2>
+                        <div class="title h3-size card-plan-item-price-popular"> $ 5.99 USD / month </div>
+                      </div> {% comment %} <p class="paragraph card-plan-item-summary"> Description </p> {% endcomment %} </div>
+                    <div class="divider card-plan-item"></div>
+                    <div class="card-plan-item-content-bottom">
+                      <div class="w-layout-grid card-plan-item-features-grid">
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 8 Sessions Daily </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Schedule Games and Get Notified </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Match with Verified Profiles </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Get rewarded for  Moderation </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 8 Quizzes Daily </div>
+                        </div>
+                      </div>
+                      <div class="card-plan-item-button-wrapper">
+                        {% if ssocial %}
+                          <div class="button-primary full-width card-plan-item"> Cancel Your Subscription </div>
+                          {% else %}
+                            <div class="button-primary full-width card-plan-item"> Upgrade </div>
+                        {% endif %}
+                        <div class="paragraph-small card-plan-item-small-print"></div>
+                      </div>
+                    </div> {% comment %} <div class="card-plan-item-popular-tag"> Popular </div> {% endcomment %}
+                  </button>
+                </form>
+                <div class="space card-plan-item-popular"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pricing-collection-list-wrapper w-dyn-list">
+            <div class="pricing-wrapper w-dyn-items" role="list">
+              <div class="plan-single-item w-dyn-item" role="listitem">
+                <form action={{ sdsociallink }} method="POST">
+                  {% comment %} <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LfPvkFTdzeHtGhWQauJUENo" /> {% endcomment %}
+                  <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LgOIwFTdzeHtGhW7Rr5UQ6t" />
+                  <button class="card plan-item w-inline-block" type="submit">
+                    <div class="card-plan-item-content-top"> {% comment %} <img alt="" class="image card-plan-item-icon" loading="eager" src="{% static 'img/icon-pro-plans-saaslify-x-template.png' %}"> {% endcomment %} <div class="card-plan-item-title-wrapper">
+                        <h2 class="title card-plan-item"> Super Duper Social </h2>
+                        <div class="title h3-size card-plan-item-price-popular"> $ 9.99 USD / month </div>
+                      </div> {% comment %} <p class="paragraph card-plan-item-summary"> Description </p> {% endcomment %} </div>
+                    <div class="divider card-plan-item"></div>
+                    <div class="card-plan-item-content-bottom">
+                      <div class="w-layout-grid card-plan-item-features-grid">
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 12 Sessions Daily </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Schedule Games and Get Notified </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Match with Verified Profiles </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Get rewarded for  Moderation </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 12 Quizzes Daily </div>
+                        </div>
+                      </div>
+                      <div class="card-plan-item-button-wrapper">
+                        {% if sdsocial %}
+                          <div class="button-primary full-width card-plan-item"> Cancel Your Subscription </div>
+                          {% else %}
+                            <div class="button-primary full-width card-plan-item"> Upgrade </div>
+                        {% endif %}
+                        <div class="paragraph-small card-plan-item-small-print"></div>
+                      </div>
+                    </div> {% comment %} <div class="card-plan-item-popular-tag"> Popular </div> {% endcomment %}
+                  </button>
+                </form>
+                <div class="space card-plan-item-popular"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="container-default pricing w-container" data-w-id="52bcd87a-a86e-beed-cf46-6c499fae6e05" style="-webkit-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-moz-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);-ms-transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);transform:translate3d(0, 20px, 0) scale3d(1, 1, 1) rotateX(0) rotateY(0) rotateZ(0) skew(0, 0);">
+          <div class="pricing-collection-list-wrapper w-dyn-list">
+            <div class="pricing-wrapper w-dyn-items" role="list">
+              <div class="plan-single-item w-dyn-item" role="listitem">
+                <form action={{ fsociallink }} method="POST">
+                  {% comment %} <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1LfPvkFTdzeHtGhWQauJUENo" /> {% endcomment %}
+                  <!-- Add a hidden field with the lookup_key of your Price --> {% csrf_token %} <input type="hidden" name="lookup_key_id" value="price_1Mf0JVFTdzeHtGhW44TNbSLY" />
+                  <button class="card plan-item w-inline-block" type="submit">
+                    <div class="card-plan-item-content-top"> {% comment %} <img alt="" class="image card-plan-item-icon" loading="eager" src="{% static 'img/icon-pro-plans-saaslify-x-template.png' %}"> {% endcomment %} <div class="card-plan-item-title-wrapper">
+                        <h2 class="title card-plan-item"> Fan Social </h2>
+                        <div class="title h3-size card-plan-item-price-popular"> $ 29.99 USD / month </div>
+                      </div> {% comment %} <p class="paragraph card-plan-item-summary"> Description </p> {% endcomment %} </div>
+                    <div class="divider card-plan-item"></div>
+                    <div class="card-plan-item-content-bottom">
+                      <div class="w-layout-grid card-plan-item-features-grid">
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 24 Sessions Daily </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Schedule Games and Get Notified </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Match with Verified Profiles </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Get rewarded for  Moderation </div>
+                        </div>
+                        <div class="card-plan-item-feature-wrapper">
+                          <div class="card-plan-item-feature-icons-wrapper"> <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon color_tick" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/check.svg' %}">
+                          </div>
+                          <div class="card-plan-item-feature-text"> Play 12 Quizzes Daily </div>
+                        </div>
+                      </div>
+                      <div class="card-plan-item-button-wrapper">
+                        {% if fsocial %}
+                          <div class="button-primary full-width card-plan-item"> Cancel Your Subscription </div>
+                          {% else %}
+                            <div class="button-primary full-width card-plan-item"> Upgrade </div>
+                        {% endif %}
+                        <div class="paragraph-small card-plan-item-small-print"></div>
+                      </div>
+                    </div> {% comment %} <div class="card-plan-item-popular-tag"> Popular </div> {% endcomment %}
+                  </button>
+                </form>
+                <div class="space card-plan-item-popular"></div>
+              </div>
+            </div>
+          </div>
+          <div class="pricing-collection-list-wrapper w-dyn-list">
+            <div class="pricing-wrapper w-dyn-items" role="list">
+              <div class="plan-single-item w-dyn-item" role="listitem">
+                <button class="card plan-item w-inline-block" type="submit">
+                  <div class="card-plan-item-content-top"> <div class="card-plan-item-title-wrapper">
+                      <h2 class="title card-plan-item"> Less Social </h2>
+                      <div class="title h3-size card-plan-item-price-popular"> Free Plan </div>
+                    </div>
+                  </div>
+                  <div class="divider card-plan-item"></div>
+                  <div class="card-plan-item-content-bottom">
+                    <div class="w-layout-grid card-plan-item-features-grid">
+                      <div class="card-plan-item-feature-wrapper">
+                        <div class="card-plan-item-feature-icons-wrapper">
+                          <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/icon-1-check-saaslify-template.svg' %}">
+                        </div>
+                        <div class="card-plan-item-feature-text"> Play 2 Sessions Daily </div>
+                      </div>
+                      <div class="card-plan-item-feature-wrapper">
+                        <div class="card-plan-item-feature-icons-wrapper">
+                          <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/icon-1-check-saaslify-template.svg' %}">
+                        </div>
+                        <div class="card-plan-item-feature-text"> Schedule Games and Get Notified </div>
+                      </div>
+                      <div class="card-plan-item-feature-wrapper">
+                        <div class="card-plan-item-feature-icons-wrapper">
+                          <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/icon-1-check-saaslify-template.svg' %}">
+                        </div>
+                        <div class="card-plan-item-feature-text"> Match with Verified Profiles </div>
+                      </div>
+                      <div class="card-plan-item-feature-wrapper">
+                        <div class="card-plan-item-feature-icons-wrapper">
+                          <img alt="Check Icon - Saaslify X Webflow Template" class="image card-plan-item-feature-icon" loading="eager" src="https://quiz-social-static-and-media-files.s3.amazonaws.com{% static 'img/icon-1-check-saaslify-template.svg' %}">
+                        </div>
+                        <div class="card-plan-item-feature-text"> Play 2 Quizzes Daily </div>
+                      </div>
+                    </div>
+                    <div class="card-plan-item-button-wrapper">
+                      {% if free %}
+                        <div class="button-primary full-width card-plan-item"> Current Plan </div>
+                      {% endif %}
+                      <div class="paragraph-small card-plan-item-small-print"></div>
+                    </div>
+                  </div>
+                </button>
+                <div class="space card-plan-item-popular"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+
+{% endblock body %}

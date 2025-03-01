@@ -1,0 +1,131 @@
+/* html::-webkit-scrollbar {
+    display: none;
+} */
+
+body,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+.chat-container {
+    height: 85vh;
+    width: 92vw;
+    margin-left: 4vw;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+}
+
+.chat-messages {
+    /* flex-grow: 1; */
+    height: inherit;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat-messages::-webkit-scrollbar {
+    display: none;
+}
+
+.chat-message {
+    max-width: 50%;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 15px;
+}
+
+.chat-message.user {
+    background-color: #007aff;
+    color: white;
+    width: 100%;
+}
+
+.chat-message.assistant {
+    width: 100%;
+}
+
+.chat-message-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.chat-message-body {
+    word-wrap: break-word;
+}
+
+.chat-message-options {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 1vw;
+}
+
+.sia-option {
+    background-color: #007aff;
+    color: white;
+    margin: 0.2vw;
+    padding: 0.5vh 1vw;
+    border: none;
+    border-radius: 1.5vw;
+    cursor: pointer;
+}
+
+.sia-option:hover {
+    background-color: #0056b3;
+}
+
+.chat-input-container {
+    display: flex;
+    margin-top: 10px;
+    /* flex: 1 1 0%; */
+    align-items: center;
+}
+
+#chat-input {
+    flex-grow: 1;
+    padding: 5px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+    border: none;
+}
+
+#send-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;    
+    /* filter: invert(58%) sepia(37%) saturate(1791%) hue-rotate(58deg) brightness(113%) contrast(98%); */
+}
+
+#mic-button-container {
+    margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    border-radius: 50%;
+}
+
+#mic-button-container.active {
+    /* background-color: #4CAF50; */
+    filter: invert(58%) sepia(37%) saturate(1791%) hue-rotate(58deg) brightness(113%) contrast(98%);
+}
+
+#mic-button {
+    font-size: 20px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    /* color: #4CAF50;*/
+    /* filter: invert(58%) sepia(37%) saturate(1791%) hue-rotate(58deg) brightness(113%) contrast(98%); */
+}
